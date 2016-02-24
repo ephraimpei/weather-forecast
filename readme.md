@@ -18,15 +18,18 @@ The Weather Forecast app utilizes the Weather API from http://openweathermap.org
 
 * Express
 * React and Flux
-* Bootstrap
+* Bootstrap (v3)
 * d3.js
 
 ### Libraries and Technologies
 
 * Webpack
 * jQuery
-* ReactRouter
 * MongoDB (node.js driver)
+
+### Vendor Technologies
+
+* FontAwesome
 
 ### DB Technologies
 

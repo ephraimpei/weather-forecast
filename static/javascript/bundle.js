@@ -19683,7 +19683,7 @@
 /* 163 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19694,6 +19694,10 @@
 	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _navbar = __webpack_require__(165);
+	
+	var _navbar2 = _interopRequireDefault(_navbar);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -19713,9 +19717,13 @@
 	  }
 	
 	  _createClass(WeatherForecastApp, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement("div", { className: "main-app" });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'main-app' },
+	        _react2.default.createElement(_navbar2.default, null)
+	      );
 	    }
 	  }]);
 	
@@ -19740,6 +19748,10 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _classnames = __webpack_require__(167);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19760,42 +19772,52 @@
 	  _createClass(Footer, [{
 	    key: "render",
 	    value: function render() {
+	      var copyrightGridSizes = (0, _classnames2.default)("col-md-10 col-sm-8 col-xs-12");
+	      var iconListGridSizes = (0, _classnames2.default)("col-md-2 col-sm-4 col-xs-12");
+	
+	      var copyrightClass = (0, _classnames2.default)("copyright", "navbar-text", "pull-left", copyrightGridSizes);
+	      var iconListClass = (0, _classnames2.default)("media-icons-list", "list-inline", "pull-right", iconListGridSizes);
+	
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "container" },
 	        _react2.default.createElement(
-	          "label",
-	          { className: "navbar-text pull-left" },
-	          "Copyright © 2016 Ephraim Pei"
-	        ),
-	        _react2.default.createElement(
-	          "ul",
-	          { className: "media-icons-list list-inline pull-right" },
+	          "div",
+	          { className: "row" },
 	          _react2.default.createElement(
-	            "li",
-	            null,
-	            _react2.default.createElement(
-	              "a",
-	              { href: "http://www.ephraimpei.com" },
-	              _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/ephraim.png" })
-	            )
+	            "div",
+	            { className: copyrightClass },
+	            "Copyright © 2016 Ephraim Pei"
 	          ),
 	          _react2.default.createElement(
-	            "li",
-	            null,
+	            "ul",
+	            { className: iconListClass },
 	            _react2.default.createElement(
-	              "a",
-	              { href: "https://www.linkedin.com/in/ephraimpei" },
-	              _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/linkedin.png" })
-	            )
-	          ),
-	          _react2.default.createElement(
-	            "li",
-	            null,
+	              "li",
+	              null,
+	              _react2.default.createElement(
+	                "a",
+	                { href: "http://www.ephraimpei.com" },
+	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/ephraim.png" })
+	              )
+	            ),
 	            _react2.default.createElement(
-	              "a",
-	              { href: "https://github.com/ephraimpei" },
-	              _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/github.png" })
+	              "li",
+	              null,
+	              _react2.default.createElement(
+	                "a",
+	                { href: "https://www.linkedin.com/in/ephraimpei" },
+	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/linkedin.png" })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              "li",
+	              null,
+	              _react2.default.createElement(
+	                "a",
+	                { href: "https://github.com/ephraimpei" },
+	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/github.png" })
+	              )
 	            )
 	          )
 	        )
@@ -19807,6 +19829,190 @@
 	}(_react2.default.Component);
 	
 	exports.default = Footer;
+
+/***/ },
+/* 165 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(167);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	var _search_bar = __webpack_require__(166);
+	
+	var _search_bar2 = _interopRequireDefault(_search_bar);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var NavBar = function (_React$Component) {
+	  _inherits(NavBar, _React$Component);
+	
+	  function NavBar(props) {
+	    _classCallCheck(this, NavBar);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(NavBar).call(this, props));
+	  }
+	
+	  _createClass(NavBar, [{
+	    key: "render",
+	    value: function render() {
+	      var blurbGridSizes = "col-md-8 col-sm-8 col-xs-12";
+	      var searchBarGridSizes = "col-md-4 col-sm-4 col-xs-12";
+	
+	      var locBlurbClass = (0, _classnames2.default)("curr-loc-blurb", "navbar-text", "pull-left", blurbGridSizes);
+	
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "navbar navbar-inverse navbar-static-top" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "container" },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "row" },
+	            _react2.default.createElement(
+	              "div",
+	              { className: locBlurbClass },
+	              "Test"
+	            ),
+	            _react2.default.createElement(_search_bar2.default, { gridSizes: searchBarGridSizes })
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return NavBar;
+	}(_react2.default.Component);
+	
+	exports.default = NavBar;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _classnames = __webpack_require__(167);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var SearchBar = function (_React$Component) {
+	  _inherits(SearchBar, _React$Component);
+	
+	  function SearchBar(props) {
+	    _classCallCheck(this, SearchBar);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this, props));
+	  }
+	
+	  _createClass(SearchBar, [{
+	    key: "render",
+	    value: function render() {
+	      var searchBarClass = (0, _classnames2.default)("search-bar", "pull-right", this.props.gridSizes);
+	
+	      return _react2.default.createElement(
+	        "div",
+	        { className: searchBarClass },
+	        _react2.default.createElement("input", { type: "text", className: "form-control", placeholder: "Type in a city" })
+	      );
+	    }
+	  }]);
+	
+	  return SearchBar;
+	}(_react2.default.Component);
+	
+	exports.default = SearchBar;
+
+/***/ },
+/* 167 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+	
+	(function () {
+		'use strict';
+	
+		var hasOwn = {}.hasOwnProperty;
+	
+		function classNames () {
+			var classes = [];
+	
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+	
+				var argType = typeof arg;
+	
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+	
+			return classes.join(' ');
+		}
+	
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
 
 /***/ }
 /******/ ]);

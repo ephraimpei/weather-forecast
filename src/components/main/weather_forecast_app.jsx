@@ -1,4 +1,5 @@
 import React from 'react';
+import NavBar from '../nav/navbar.jsx';
 
 class WeatherForecastApp extends React.Component {
   constructor (props) {
@@ -8,6 +9,7 @@ class WeatherForecastApp extends React.Component {
   render () {
     return (
         <div className="main-app">
+          <NavBar />
         </div>
      );
   }
