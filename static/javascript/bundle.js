@@ -19951,25 +19951,17 @@
 	
 	    _this.addAutocompleteListener = _this.addAutocompleteListener.bind(_this);
 	    _this.handleSearchSubmission = _this.handleSearchSubmission.bind(_this);
-	    _this.handleKeyDown = _this.handleKeyDown.bind(_this);
-	    _this.triggerMapsEvent = _this.triggerMapsEvent.bind(_this);
 	    return _this;
 	  }
 	
 	  _createClass(SearchBar, [{
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      var _this2 = this;
-	
 	      this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), {
 	        types: ['(cities)']
 	      });
 	
 	      this.addAutocompleteListener(this.autocomplete);
-	
-	      document.getElementById('submit').onclick = function () {
-	        return _this2.triggerMapsEvent();
-	      };
 	
 	      _weather_store2.default.addChangeListener(this._onChange);
 	    }
@@ -19983,12 +19975,7 @@
 	  }, {
 	    key: "addAutocompleteListener",
 	    value: function addAutocompleteListener(autocomplete) {
-	      var _this3 = this;
-	
-	      var reactivateBtn = function reactivateBtn() {
-	        document.getElementById("submit").classList.remove('active', 'disabled');
-	        document.getElementById("submit").disabled = false;
-	      };
+	      var _this2 = this;
 	
 	      this.autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', function () {
 	        var getPlace = new Promise(function (resolve, reject) {
@@ -20001,40 +19988,25 @@
 	          }
 	        });
 	
-	        getPlace.then(function (placesObj) {
-	          return _this3.handleSearchSubmission(placesObj, reactivateBtn);
+	        getPlace.then(function (result) {
+	          return _this2.handleSearchSubmission(result);
 	        }, function (err) {
-	          return _this3.handleSearchError(err, reactivateBtn);
+	          return _this2.handleSearchError(err);
 	        });
 	      });
 	    }
 	  }, {
-	    key: "triggerMapsEvent",
-	    value: function triggerMapsEvent() {
-	      document.getElementById("submit").classList.add('active', 'disabled');
-	      google.maps.event.trigger(this.autocomplete, 'place_changed');
-	    }
-	  }, {
 	    key: "handleSearchSubmission",
-	    value: function handleSearchSubmission(placesObj, reactivateBtn) {
-	      var lat = placesObj.geometry.location.lat();
-	      var lng = placesObj.geometry.location.lng();
+	    value: function handleSearchSubmission(result) {
+	      var lat = result.geometry.location.lat();
+	      var lng = result.geometry.location.lng();
 	
-	      _weather_api_util2.default.getForecastData(lat, lng, reactivateBtn);
+	      _weather_api_util2.default.getForecastData(lat, lng);
 	    }
 	  }, {
 	    key: "handleSearchError",
-	    value: function handleSearchError(err, reactivateBtn) {
+	    value: function handleSearchError(err) {
 	      console.log(err);
-	      reactivateBtn();
-	    }
-	  }, {
-	    key: "handleKeyDown",
-	    value: function handleKeyDown(e) {
-	      if (e.keyCode === 13 && e.currentTarget.value.length > 0) {
-	        document.getElementById("submit").classList.add('active', 'disabled');
-	        document.getElementById("submit").disabled = true;
-	      }
 	    }
 	  }, {
 	    key: "render",
@@ -20047,20 +20019,16 @@
 	        _react2.default.createElement(
 	          "div",
 	          { className: "input-group" },
+	          _react2.default.createElement(
+	            "span",
+	            { className: "input-group-addon" },
+	            _react2.default.createElement("i", { className: "fa fa-search" })
+	          ),
 	          _react2.default.createElement("input", { type: "text",
 	            id: "autocomplete",
 	            className: "form-control",
 	            placeholder: "Type in a city",
-	            onKeyDown: this.handleKeyDown }),
-	          _react2.default.createElement(
-	            "span",
-	            { className: "input-group-btn" },
-	            _react2.default.createElement(
-	              "button",
-	              { id: "submit", className: "btn btn-default" },
-	              _react2.default.createElement("i", { className: "fa fa-search" })
-	            )
-	          )
+	            onKeyDown: this.handleKeyDown })
 	        )
 	      );
 	    }
@@ -20745,11 +20713,10 @@
 	
 	  _createClass(WeatherApiUtil, [{
 	    key: "getForecastData",
-	    value: function getForecastData(lat, lng, success) {
+	    value: function getForecastData(lat, lng) {
 	      var receiveLocation = function receiveLocation(data) {
 	        debugger;
 	        _weather_actions2.default.receiveWeatherData(data);
-	        success();
 	      };
 	
 	      var query = "forecast?lat=" + lat + "&lon=" + lng;

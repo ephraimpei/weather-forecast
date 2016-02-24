@@ -8,8 +8,6 @@ class SearchBar extends React.Component {
     super(props);
     this.addAutocompleteListener = this.addAutocompleteListener.bind(this);
     this.handleSearchSubmission = this.handleSearchSubmission.bind(this);
-    this.handleKeyDown = this.handleKeyDown.bind(this);
-    this.triggerMapsEvent = this.triggerMapsEvent.bind(this);
   }
 
   componentDidMount () {
@@ -19,8 +17,6 @@ class SearchBar extends React.Component {
     });
 
     this.addAutocompleteListener(this.autocomplete);
-
-    document.getElementById('submit').onclick = () => this.triggerMapsEvent();
 
     weatherStore.addChangeListener(this._onChange);
   }
@@ -32,11 +28,6 @@ class SearchBar extends React.Component {
   }
 
   addAutocompleteListener (autocomplete) {
-    const reactivateBtn = () => {
-      document.getElementById("submit").classList.remove('active', 'disabled');
-      document.getElementById("submit").disabled = false;
-    };
-
     this.autocompleteListener = google.maps.event.addListener(autocomplete, 'place_changed', () => {
       const getPlace = new Promise((resolve, reject) => {
         const place = autocomplete.getPlace();
@@ -45,33 +36,20 @@ class SearchBar extends React.Component {
         else { reject("Place not found!"); }
       });
 
-      getPlace.then((placesObj) => this.handleSearchSubmission(placesObj, reactivateBtn),
-        (err) => this.handleSearchError(err, reactivateBtn));
+      getPlace.then((result) => this.handleSearchSubmission(result),
+        (err) => this.handleSearchError(err));
     });
   }
 
-  triggerMapsEvent () {
-    document.getElementById("submit").classList.add('active', 'disabled');
-    google.maps.event.trigger(this.autocomplete, 'place_changed');
+  handleSearchSubmission (result) {
+    const lat = result.geometry.location.lat();
+    const lng = result.geometry.location.lng();
+
+    WeatherApiUtil.getForecastData(lat, lng);
   }
 
-  handleSearchSubmission (placesObj, reactivateBtn) {
-    const lat = placesObj.geometry.location.lat();
-    const lng = placesObj.geometry.location.lng();
-
-    WeatherApiUtil.getForecastData(lat, lng, reactivateBtn);
-  }
-
-  handleSearchError (err, reactivateBtn) {
+  handleSearchError (err) {
     console.log(err);
-    reactivateBtn();
-  }
-
-  handleKeyDown (e) {
-    if (e.keyCode === 13 && e.currentTarget.value.length > 0) {
-      document.getElementById("submit").classList.add('active', 'disabled');
-      document.getElementById("submit").disabled = true;
-    }
   }
 
   render () {
@@ -80,17 +58,15 @@ class SearchBar extends React.Component {
     return (
       <div className={ searchBarClass }>
         <div className="input-group">
+          <span className="input-group-addon">
+            <i className="fa fa-search"></i>
+          </span>
+
           <input type="text"
             id="autocomplete"
             className="form-control"
             placeholder="Type in a city"
             onKeyDown={ this.handleKeyDown }/>
-
-          <span className="input-group-btn">
-            <button id="submit" className="btn btn-default">
-              <i className="fa fa-search"></i>
-            </button>
-          </span>
         </div>
       </div>
     );

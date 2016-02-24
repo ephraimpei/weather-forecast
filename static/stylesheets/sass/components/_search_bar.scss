@@ -26,3 +26,9 @@
   background-image: none !important;
   height: 0px;
 }
+
+/* remove marker icons from autcomplete list items*/
+.pac-icon
+{
+  background-image: none !important;
+}

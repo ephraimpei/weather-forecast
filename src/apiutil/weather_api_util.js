@@ -1,11 +1,10 @@
 import WeatherActions from '../actions/weather_actions.js';
 
 class WeatherApiUtil {
-  getForecastData (lat, lng, success) {
+  getForecastData (lat, lng) {
     const receiveLocation = (data) => {
       debugger;
       WeatherActions.receiveWeatherData(data);
-      success();
     };
 
     const query = `forecast?lat=${ lat }&lon=${ lng }`;
