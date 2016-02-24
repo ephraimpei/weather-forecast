@@ -1,4 +1,28 @@
-.search-bar {
-  margin-top: 7.5px;
-  margin-bottom: 7.5px;
+.search-bar
+{
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  .input-group
+  {
+    input
+    {
+      height: 33px;
+    }
+  }
+
+  .input-group-btn
+  {
+    button
+    {
+      height: 33px;
+    }
+  }
+}
+
+/* remove 'powered by Google' logo from autocomplete list */
+.pac-container:after
+{
+  background-image: none !important;
+  height: 0px;
 }

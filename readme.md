@@ -25,14 +25,9 @@ The Weather Forecast app utilizes the Weather API from http://openweathermap.org
 
 * Webpack
 * jQuery
-* MongoDB (node.js driver)
 
 ### Vendor Technologies
 
 * FontAwesome
-
-### DB Technologies
-
-* MongoDB
 
 ### App features

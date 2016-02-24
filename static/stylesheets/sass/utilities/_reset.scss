@@ -1,4 +1,5 @@
-html, body, h1, h2, h3, div, footer, ul, li, a, figure, button, textarea, form, label {
+html, body, h1, h2, h3, div, footer, ul, li, a, figure, button, textarea, form, label
+{
   padding: 0;
   border: 0;
   margin: 0;
@@ -12,15 +13,18 @@ html, body, h1, h2, h3, div, footer, ul, li, a, figure, button, textarea, form, 
   background: transparent
 }
 
-ul {
+ul
+{
   list-style: none;
 }
 
-input, textarea {
+input, textarea
+{
   outline: 0;
 }
 
-img {
+img
+{
   display: block;
   width: 100%;
   height: auto;
