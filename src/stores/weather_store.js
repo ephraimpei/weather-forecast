@@ -7,7 +7,8 @@ const CHANGE_EVENT = "change";
 class WeatherStore extends EventEmitter {
   constructor () {
     super();
-    this.weatherData = {};
+    this.weatherData = [];
+    this.location = "";
   }
 
   addChangeListener (callback) {
@@ -18,10 +19,19 @@ class WeatherStore extends EventEmitter {
     this.removeListener(CHANGE_EVENT, callback);
   }
 
-  set (weatherData) {
+  set (weatherData, location) {
     this.weatherData = weatherData;
+    this.location = location;
 
     this.emit(CHANGE_EVENT);
+  }
+
+  getWeatherData () {
+    return this.weatherData.slice();
+  }
+
+  getLocation () {
+    return this.location;
   }
 }
 
@@ -30,7 +40,7 @@ const weatherStore = new WeatherStore();
 AppDispatcher.register(function (payload) {
   switch (payload.actionType) {
     case WeatherConstants.RECEIVE_WEATHER_DATA:
-      weatherStore.set(payload.weatherData);
+      weatherStore.set(payload.weatherData, payload.location);
       break;
   }
 });

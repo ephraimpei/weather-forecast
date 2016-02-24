@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from "classnames";
 import WeatherApiUtil from "../../apiutil/weather_api_util.js";
-import weatherStore from "../../stores/weather_store.js";
 
 class SearchBar extends React.Component {
   constructor (props) {
     super(props);
     this.addAutocompleteListener = this.addAutocompleteListener.bind(this);
     this.handleSearchSubmission = this.handleSearchSubmission.bind(this);
+    this.handleSearchError = this.handleSearchError.bind(this);
   }
 
   componentDidMount () {
@@ -17,14 +17,10 @@ class SearchBar extends React.Component {
     });
 
     this.addAutocompleteListener(this.autocomplete);
-
-    weatherStore.addChangeListener(this._onChange);
   }
 
   componentWillUnmount () {
     google.maps.event.removeListener(this.autocompleteListener);
-
-    weatherStore.removeChangeListener(this._onChange);
   }
 
   addAutocompleteListener (autocomplete) {
@@ -42,10 +38,11 @@ class SearchBar extends React.Component {
   }
 
   handleSearchSubmission (result) {
+    const location = result.formatted_address;
     const lat = result.geometry.location.lat();
     const lng = result.geometry.location.lng();
 
-    WeatherApiUtil.getForecastData(lat, lng);
+    WeatherApiUtil.getForecastData(lat, lng, location);
   }
 
   handleSearchError (err) {
@@ -65,8 +62,7 @@ class SearchBar extends React.Component {
           <input type="text"
             id="autocomplete"
             className="form-control"
-            placeholder="Type in a city"
-            onKeyDown={ this.handleKeyDown }/>
+            placeholder="Search for a city..."/>
         </div>
       </div>
     );
