@@ -19764,42 +19764,38 @@
 	        "div",
 	        { className: "container" },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "row" },
+	          "label",
+	          { className: "navbar-text pull-left" },
+	          "Copyright © 2016 Ephraim Pei"
+	        ),
+	        _react2.default.createElement(
+	          "ul",
+	          { className: "media-icons-list list-inline pull-right" },
 	          _react2.default.createElement(
-	            "label",
-	            { className: "navbar-text pull-left" },
-	            "Copyright © 2016 Ephraim Pei"
+	            "li",
+	            null,
+	            _react2.default.createElement(
+	              "a",
+	              { href: "http://www.ephraimpei.com" },
+	              _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/ephraim.png" })
+	            )
 	          ),
 	          _react2.default.createElement(
-	            "ul",
-	            { className: "media-icons-list list-inline pull-right" },
+	            "li",
+	            null,
 	            _react2.default.createElement(
-	              "li",
-	              null,
-	              _react2.default.createElement(
-	                "a",
-	                { href: "http://www.ephraimpei.com" },
-	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/ephraim.png" })
-	              )
-	            ),
+	              "a",
+	              { href: "https://www.linkedin.com/in/ephraimpei" },
+	              _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/linkedin.png" })
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            null,
 	            _react2.default.createElement(
-	              "li",
-	              null,
-	              _react2.default.createElement(
-	                "a",
-	                { href: "https://www.linkedin.com/in/ephraimpei" },
-	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/linkedin.png" })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              "li",
-	              null,
-	              _react2.default.createElement(
-	                "a",
-	                { href: "https://github.com/ephraimpei" },
-	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/github.png" })
-	              )
+	              "a",
+	              { href: "https://github.com/ephraimpei" },
+	              _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/github.png" })
 	            )
 	          )
 	        )
