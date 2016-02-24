@@ -25,15 +25,16 @@ img {
   width: 100%;
   height: auto; }
 
-.media-icons-list {
-  margin-top: 7px;
-  margin-bottom: 7px; }
-  .media-icons-list .social-media-icon {
-    width: 32px; }
+.social-media-icon {
+  width: 32px; }
 
 .copyright {
   margin-left: 0 !important;
   margin-right: 0 !important; }
+
+.media-icons-list {
+  margin-top: 8px;
+  margin-bottom: 8px; }
 
 @media only screen and (max-width: 750px) {
   .copyright {
@@ -46,7 +47,7 @@ img {
   margin-right: 0 !important; }
 
 .search-bar {
-  margin-top: 7px;
-  margin-bottom: 7px; }
+  margin-top: 7.5px;
+  margin-bottom: 7.5px; }
 
 /*# sourceMappingURL=main.css.map */
