@@ -7,7 +7,7 @@ class WeatherForecastApp extends React.Component {
   constructor (props) {
     super(props);
     this.onChange = this.onChange.bind(this);
-    this.state = { weatherData: {}, location: "" };
+    this.state = { forecast: {}, location: "" };
   }
 
   componentDidMount () {
@@ -20,17 +20,25 @@ class WeatherForecastApp extends React.Component {
 
   onChange () {
     this.setState({
-      weatherData: weatherStore.getWeatherData(),
+      forecast: weatherStore.getForecast(),
       location: weatherStore.getLocation()
     });
   }
 
   render () {
+    let forecastIndex;
+
+    if (Object.keys(this.state.forecast).length !== 0) {
+      forecastIndex = (
+        <ForecastIndex forecast={ this.state.forecast }
+          location={ this.state.location }/>
+      );
+    }
+
     return (
         <div className="main-app">
           <NavBar />
-          <ForecastIndex weather={ this.state.weatherData }
-            location={ this.state.location }/>
+          { forecastIndex }
         </div>
      );
   }

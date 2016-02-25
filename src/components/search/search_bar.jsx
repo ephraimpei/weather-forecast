@@ -48,7 +48,6 @@ class SearchBar extends React.Component {
   }
 
   handleSearchError (err) {
-    console.log(err);
     this.setState({ error: true, errMsg: err });
   }
 

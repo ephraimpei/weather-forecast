@@ -19724,7 +19724,7 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WeatherForecastApp).call(this, props));
 	
 	    _this.onChange = _this.onChange.bind(_this);
-	    _this.state = { weatherData: {}, location: "" };
+	    _this.state = { forecast: {}, location: "" };
 	    return _this;
 	  }
 	
@@ -19742,19 +19742,25 @@
 	    key: 'onChange',
 	    value: function onChange() {
 	      this.setState({
-	        weatherData: _weather_store2.default.getWeatherData(),
+	        forecast: _weather_store2.default.getForecast(),
 	        location: _weather_store2.default.getLocation()
 	      });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var forecastIndex = undefined;
+	
+	      if (Object.keys(this.state.forecast).length !== 0) {
+	        forecastIndex = _react2.default.createElement(_forecast_index2.default, { forecast: this.state.forecast,
+	          location: this.state.location });
+	      }
+	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-app' },
 	        _react2.default.createElement(_navbar2.default, null),
-	        _react2.default.createElement(_forecast_index2.default, { weather: this.state.weatherData,
-	          location: this.state.location })
+	        forecastIndex
 	      );
 	    }
 	  }]);
@@ -20034,7 +20040,6 @@
 	  }, {
 	    key: "handleSearchError",
 	    value: function handleSearchError(err) {
-	      console.log(err);
 	      this.setState({ error: true, errMsg: err });
 	    }
 	  }, {
@@ -20779,7 +20784,8 @@
 	
 	      var query = "forecast?lat=" + lat + "&lon=" + lng;
 	      var apikey = "appid=585e670f55ee9b114fa2f1f2731177d9";
-	      var url = "http://api.openweathermap.org/data/2.5/" + query + "&" + apikey;
+	      var units = "units=imperial";
+	      var url = "http://api.openweathermap.org/data/2.5/" + query + "&" + apikey + "&" + units;
 	
 	      $.get(url).done(receiveWeatherData);
 	    }
@@ -20822,10 +20828,10 @@
 	
 	  _createClass(_class, [{
 	    key: "receiveWeatherData",
-	    value: function receiveWeatherData(weatherData, location) {
+	    value: function receiveWeatherData(forecast, location) {
 	      _dispatcher2.default.dispatch({
 	        actionType: _weather_constants2.default.RECEIVE_WEATHER_DATA,
-	        weatherData: weatherData,
+	        forecast: forecast,
 	        location: location
 	      });
 	    }
@@ -20889,7 +20895,7 @@
 	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WeatherStore).call(this));
 	
-	    _this.weatherData = [];
+	    _this.forecast = [];
 	    _this.location = "";
 	    return _this;
 	  }
@@ -20906,16 +20912,16 @@
 	    }
 	  }, {
 	    key: 'set',
-	    value: function set(weatherData, location) {
-	      this.weatherData = weatherData;
+	    value: function set(forecast, location) {
+	      this.forecast = forecast;
 	      this.location = location;
 	
 	      this.emit(CHANGE_EVENT);
 	    }
 	  }, {
-	    key: 'getWeatherData',
-	    value: function getWeatherData() {
-	      return this.weatherData.slice();
+	    key: 'getForecast',
+	    value: function getForecast() {
+	      return this.forecast.slice();
 	    }
 	  }, {
 	    key: 'getLocation',
@@ -20932,7 +20938,7 @@
 	_dispatcher2.default.register(function (payload) {
 	  switch (payload.actionType) {
 	    case _weather_constants2.default.RECEIVE_WEATHER_DATA:
-	      weatherStore.set(payload.weatherData, payload.location);
+	      weatherStore.set(payload.forecast, payload.location);
 	      break;
 	  }
 	});
@@ -20959,6 +20965,8 @@
 	
 	var _forecast_index_item2 = _interopRequireDefault(_forecast_index_item);
 	
+	var _forecast = __webpack_require__(182);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20979,9 +20987,18 @@
 	  _createClass(ForecastIndex, [{
 	    key: 'render',
 	    value: function render() {
-	      var nDays = 5;
+	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
+	      // console.log(forecastSplitByDay);
+	      var forecastIndexItems = [0, 1, 2, 3, 4].map(function (n) {
+	        // return <ForecastIndexItem key={ n } forecast={} />;
 	
-	      return _react2.default.createElement('div', { className: 'forecast-index' });
+	      });
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'forecast-index' },
+	        forecastIndexItems
+	      );
 	    }
 	  }]);
 	
@@ -21027,9 +21044,9 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        'li',
+	        'div',
 	        null,
-	        'test'
+	        this.props.forecast
 	      );
 	    }
 	  }]);
@@ -21038,6 +21055,49 @@
 	}(_react2.default.Component);
 	
 	exports.default = ForecastIndexItem;
+
+/***/ },
+/* 182 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var separateForecastByDay = function separateForecastByDay(forecast) {
+	  var todayUTCDate = new Date().getUTCDate();
+	  var separatedForecast = new Array(5);
+	
+	  for (var i = 0; i < separatedForecast.length; i++) {
+	    separatedForecast[i] = [];
+	  }
+	
+	  // 86400000 ms in a day
+	  forecast.forEach(function (forecastEl) {
+	    var UTCDate = new Date(forecastEl.dt * 1000).getUTCDate();
+	
+	    // compare UTC date of forecast element with UTC date of day 1 (tmr), day 2, etc...
+	    if (UTCDate === new Date(new Date().getTime()).getUTCDate()) {
+	      separatedForecast[0].push(forecastEl);
+	    } else if (UTCDate === new Date(new Date().getTime() + 86400000).getUTCDate()) {
+	      separatedForecast[1].push(forecastEl);
+	    } else if (UTCDate === new Date(new Date().getTime() + 86400000 * 2).getUTCDate()) {
+	      separatedForecast[2].push(forecastEl);
+	    } else if (UTCDate === new Date(new Date().getTime() + 86400000 * 3).getUTCDate()) {
+	      separatedForecast[3].push(forecastEl);
+	    } else if (UTCDate === new Date(new Date().getTime() + 86400000 * 4).getUTCDate()) {
+	      separatedForecast[4].push(forecastEl);
+	    }
+	  });
+	
+	  return separatedForecast;
+	};
+	
+	var getDailyForecastByDay = function getDailyForecastByDay(day, forecast) {};
+	
+	exports.separateForecastByDay = separateForecastByDay;
+	exports.getDailyForecastByDay = getDailyForecastByDay;
 
 /***/ }
 /******/ ]);

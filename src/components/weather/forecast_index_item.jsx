@@ -7,7 +7,9 @@ class ForecastIndexItem extends React.Component {
 
   render () {
     return (
-      <li>test</li>
+      <div>
+        { this.props.forecast }
+      </div>
     );
   }
 }

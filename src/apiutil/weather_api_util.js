@@ -6,7 +6,8 @@ class WeatherApiUtil {
 
     const query = `forecast?lat=${ lat }&lon=${ lng }`;
     const apikey = "appid=585e670f55ee9b114fa2f1f2731177d9";
-    const url = `http://api.openweathermap.org/data/2.5/${ query }&${ apikey }`;
+    const units = "units=imperial";
+    const url = `http://api.openweathermap.org/data/2.5/${ query }&${ apikey }&${ units }`;
 
     $.get(url).done(receiveWeatherData);
   }
