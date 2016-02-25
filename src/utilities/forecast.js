@@ -14,7 +14,9 @@ const separateForecastByDay = (forecast) => {
     let forecastEl = forecast[j];
 
     // get UTC date from forecastEl
-    const date = new Date(`${ forecastEl.dt_txt }`);
+    // .replace(/-/g, '/') added to resolve ES5 vs ISO-8601 specification gaps
+    // fixes issue with date showing up as invalid in iOS
+    const date = new Date(`${ forecastEl.dt_txt.replace(/-/g, '/') }`);
 
     // skip if forecast el matches today's date
     // convert today's date to UTC for apples to apples comparison
