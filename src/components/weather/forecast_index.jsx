@@ -11,7 +11,7 @@ class ForecastIndex extends React.Component {
 
   render () {
     const forecastSplitByDay = separateForecastByDay(this.props.forecast);
-    // console.log(forecastSplitByDay);
+    console.log(forecastSplitByDay);
     const forecastIndexItems = [0,1,2,3,4].map( (n) => {
       // return <ForecastIndexItem key={ n } forecast={} />;
 
