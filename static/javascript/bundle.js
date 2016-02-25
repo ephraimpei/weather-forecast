@@ -19749,11 +19749,12 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      debugger;
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-app' },
-	        _react2.default.createElement(_navbar2.default, null)
+	        _react2.default.createElement(_navbar2.default, null),
+	        _react2.default.createElement(_forecast_index2.default, { weather: this.state.weatherData,
+	          location: this.state.location })
 	      );
 	    }
 	  }]);
@@ -19905,8 +19906,8 @@
 	  _createClass(NavBar, [{
 	    key: "render",
 	    value: function render() {
-	      var blurbGridSizes = "col-md-8 col-sm-8 col-xs-12";
-	      var searchBarGridSizes = "col-md-4 col-sm-4 col-xs-12";
+	      var blurbGridSizes = "col-md-8 col-sm-7 col-xs-12";
+	      var searchBarGridSizes = "col-md-4 col-sm-5 col-xs-12";
 	
 	      var locBlurbClass = (0, _classnames2.default)("curr-loc-blurb", "navbar-text", "pull-left", blurbGridSizes);
 	
@@ -19979,6 +19980,8 @@
 	    _this.addAutocompleteListener = _this.addAutocompleteListener.bind(_this);
 	    _this.handleSearchSubmission = _this.handleSearchSubmission.bind(_this);
 	    _this.handleSearchError = _this.handleSearchError.bind(_this);
+	    _this.removeError = _this.removeError.bind(_this);
+	    _this.state = { error: false, errMsg: null };
 	    return _this;
 	  }
 	
@@ -20032,11 +20035,39 @@
 	    key: "handleSearchError",
 	    value: function handleSearchError(err) {
 	      console.log(err);
+	      this.setState({ error: true, errMsg: err });
+	    }
+	  }, {
+	    key: "removeError",
+	    value: function removeError() {
+	      if (this.state.error) {
+	        this.setState({ error: false, errMsg: null });
+	      }
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
 	      var searchBarClass = (0, _classnames2.default)("search-bar", "pull-right", this.props.gridSizes);
+	      var errMsg = undefined;
+	
+	      if (this.state.error) {
+	        errMsg = _react2.default.createElement(
+	          "div",
+	          { className: "search-error alert alert-danger", role: "alert" },
+	          _react2.default.createElement("span", { className: "glyphicon glyphicon-exclamation-sign", "aria-hidden": "true" }),
+	          _react2.default.createElement(
+	            "span",
+	            { className: "sr-only" },
+	            "Error:"
+	          ),
+	          _react2.default.createElement(
+	            "span",
+	            null,
+	            "   ",
+	            this.state.errMsg
+	          )
+	        );
+	      }
 	
 	      return _react2.default.createElement(
 	        "div",
@@ -20052,8 +20083,12 @@
 	          _react2.default.createElement("input", { type: "text",
 	            id: "autocomplete",
 	            className: "form-control",
-	            placeholder: "Search for a city..." })
-	        )
+	            placeholder: "Search for a city...",
+	            onFocus: this.removeError,
+	            onChange: this.removeError,
+	            onBlur: this.removeError })
+	        ),
+	        errMsg
 	      );
 	    }
 	  }]);

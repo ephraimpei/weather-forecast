@@ -26,10 +26,11 @@ class WeatherForecastApp extends React.Component {
   }
 
   render () {
-    debugger;
     return (
         <div className="main-app">
           <NavBar />
+          <ForecastIndex weather={ this.state.weatherData }
+            location={ this.state.location }/>
         </div>
      );
   }

@@ -53,6 +53,9 @@ img {
     height: 33px; }
   .search-bar .input-group-btn button {
     height: 33px; }
+  .search-bar .search-error {
+    position: absolute;
+    width: calc(100% - 30px); }
 
 /* remove 'powered by Google' logo from autocomplete list */
 .pac-container:after {

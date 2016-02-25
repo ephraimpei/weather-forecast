@@ -8,8 +8,8 @@ class NavBar extends React.Component {
   }
 
   render () {
-    const blurbGridSizes = "col-md-8 col-sm-8 col-xs-12";
-    const searchBarGridSizes = "col-md-4 col-sm-4 col-xs-12";
+    const blurbGridSizes = "col-md-8 col-sm-7 col-xs-12";
+    const searchBarGridSizes = "col-md-4 col-sm-5 col-xs-12";
 
     const locBlurbClass = classNames("curr-loc-blurb", "navbar-text", "pull-left",
       blurbGridSizes);

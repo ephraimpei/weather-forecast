@@ -8,6 +8,8 @@ class SearchBar extends React.Component {
     this.addAutocompleteListener = this.addAutocompleteListener.bind(this);
     this.handleSearchSubmission = this.handleSearchSubmission.bind(this);
     this.handleSearchError = this.handleSearchError.bind(this);
+    this.removeError = this.removeError.bind(this);
+    this.state = { error: false, errMsg: null };
   }
 
   componentDidMount () {
@@ -47,10 +49,26 @@ class SearchBar extends React.Component {
 
   handleSearchError (err) {
     console.log(err);
+    this.setState({ error: true, errMsg: err });
+  }
+
+  removeError () {
+    if (this.state.error) { this.setState({ error: false, errMsg: null }); }
   }
 
   render () {
     const searchBarClass = classNames("search-bar", "pull-right", this.props.gridSizes);
+    let errMsg;
+
+    if (this.state.error) {
+      errMsg = (
+        <div className="search-error alert alert-danger" role="alert">
+          <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+          <span className="sr-only">Error:</span>
+          <span>   { this.state.errMsg }</span>
+        </div>
+      );
+    }
 
     return (
       <div className={ searchBarClass }>
@@ -62,8 +80,14 @@ class SearchBar extends React.Component {
           <input type="text"
             id="autocomplete"
             className="form-control"
-            placeholder="Search for a city..."/>
+            placeholder="Search for a city..."
+            onFocus={ this.removeError }
+            onChange={ this.removeError }
+            onBlur={ this.removeError }/>
         </div>
+
+        { errMsg }
+
       </div>
     );
   }
