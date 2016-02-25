@@ -1,0 +1,22 @@
+#wrapper
+{
+  min-height: 100%;
+  position: relative;
+}
+
+@media only screen and (min-width: 750px)
+{
+  #content
+  {
+    padding-bottom: 54.18px;
+  }
+}
+
+@media only screen and (max-width: 750px)
+{
+  #content
+  {
+    padding-bottom: 101.45px;
+  }
+
+}

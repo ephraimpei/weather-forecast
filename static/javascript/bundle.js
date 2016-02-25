@@ -21021,10 +21021,27 @@
 	    key: 'render',
 	    value: function render() {
 	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
-	      console.log(forecastSplitByDay[0]);
-	      console.log((0, _forecast.consolidateToDailyForecast)(forecastSplitByDay[0]));
 	
-	      return _react2.default.createElement('div', { className: 'forecast-index' });
+	      var forecastIndexItems = forecastSplitByDay.map(function (forecast, idx) {
+	        var consolidatedForecast = (0, _forecast.consolidateToDailyForecast)(forecast);
+	        var gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
+	
+	        gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-3 col-xs-offset-0" : "";
+	
+	        return _react2.default.createElement(_forecast_index_item2.default, { key: idx,
+	          forecast: consolidatedForecast,
+	          gridSizes: gridSizes });
+	      });
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'forecast-index container' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'row' },
+	          forecastIndexItems
+	        )
+	      );
 	    }
 	  }]);
 	
@@ -21037,7 +21054,7 @@
 /* 181 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21067,12 +21084,60 @@
 	  }
 	
 	  _createClass(ForecastIndexItem, [{
-	    key: 'render',
+	    key: "render",
 	    value: function render() {
+	      var klass = "forecast-index-item panel panel-primary ";
+	      var high = "High: " + this.props.forecast.high + "°F";
+	      var low = "Low: " + this.props.forecast.low + "°F";
+	      var humidity = "Humidity: " + this.props.forecast.humidity + "%";
+	      var day = this.props.forecast.date.split(" ")[0];
+	      var date = this.props.forecast.date.split(" ").slice(1).join(" ");
+	
 	      return _react2.default.createElement(
-	        'div',
-	        null,
-	        this.props.forecast
+	        "div",
+	        { className: this.props.gridSizes },
+	        _react2.default.createElement(
+	          "div",
+	          { className: klass },
+	          _react2.default.createElement(
+	            "div",
+	            { className: "panel-heading" },
+	            _react2.default.createElement(
+	              "h3",
+	              { className: "panel-title" },
+	              day
+	            ),
+	            _react2.default.createElement(
+	              "h3",
+	              { className: "panel-title" },
+	              date
+	            )
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { className: "panel-body" },
+	            _react2.default.createElement(
+	              "div",
+	              null,
+	              this.props.forecast.text
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              null,
+	              high
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              null,
+	              low
+	            ),
+	            _react2.default.createElement(
+	              "div",
+	              null,
+	              humidity
+	            )
+	          )
+	        )
 	      );
 	    }
 	  }]);

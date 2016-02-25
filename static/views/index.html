@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- WeatherForecastApp local stylesheet -->
     <link rel="stylesheet" href="./stylesheets/css/main.css">
@@ -16,8 +16,12 @@
     <title>Weather Forecast</title>
   </head>
   <body>
-    <div id="content"></div>
-    <footer id="footer" class="navbar navbar-default navbar-fixed-bottom"></footer>
+    <div id="wrapper">
+      <div id="content"></div>
+      <div id="footer-wrapper">
+        <footer id="footer" class="navbar navbar-default"></footer>
+      </div>
+    </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
