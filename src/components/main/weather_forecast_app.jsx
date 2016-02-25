@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from '../nav/navbar.jsx';
-import ForecastIndex from '../weather/forecast_index.jsx';
+import ForecastIndex from '../forecast/forecast_index.jsx';
 import weatherStore from "../../stores/weather_store.js";
 import GooglePlacesApiUtil from "../../apiutil/google_places_api_util.js";
 
@@ -50,8 +50,6 @@ class WeatherForecastApp extends React.Component {
       <span>Finding current location <i className="fa fa-refresh fa-spin"></i></span>
     ) : this.state.location;
 
-
-    // console.log(location);
     if (Object.keys(this.state.forecast).length !== 0) {
       forecastIndex = (
         <ForecastIndex forecast={ this.state.forecast }

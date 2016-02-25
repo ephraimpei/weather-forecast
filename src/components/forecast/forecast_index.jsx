@@ -1,6 +1,7 @@
 import React from 'react';
 import ForecastIndexItem from './forecast_index_item.jsx';
 import { separateForecastByDay, consolidateToDailyForecast } from '../../utilities/forecast.js';
+import weatherCompLookup from '../../utilities/weather_component_lookup.jsx';
 
 class ForecastIndex extends React.Component {
   constructor (props) {
@@ -19,7 +20,8 @@ class ForecastIndex extends React.Component {
       return (
         <ForecastIndexItem key={ idx }
         forecast={ consolidatedForecast }
-        gridSizes={ gridSizes }/>
+        gridSizes={ gridSizes }
+        iconLookup={ weatherCompLookup }/>
       );
     });
 
