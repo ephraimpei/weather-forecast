@@ -21021,17 +21021,10 @@
 	    key: 'render',
 	    value: function render() {
 	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
+	      console.log(forecastSplitByDay[0]);
+	      console.log((0, _forecast.consolidateToDailyForecast)(forecastSplitByDay[0]));
 	
-	      var forecastIndexItems = [0, 1, 2, 3, 4].map(function (n) {
-	        // return <ForecastIndexItem key={ n } forecast={} />;
-	
-	      });
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'forecast-index' },
-	        forecastIndexItems
-	      );
+	      return _react2.default.createElement('div', { className: 'forecast-index' });
 	    }
 	  }]);
 	
@@ -21098,9 +21091,11 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
 	// separate 5 day 3-hourly forecast into daily 3-hourly forecasts
 	var separateForecastByDay = function separateForecastByDay(forecast) {
-	  var now = new Date().getTime();
 	  var separatedForecast = new Array(5);
 	
 	  for (var i = 0; i < separatedForecast.length; i++) {
@@ -21112,15 +21107,23 @@
 	  var prevForecastElDate = _ref[1];
 	
 	
+	  var today = new Date();
+	
 	  for (var j = 0; j < forecast.length; j++) {
 	    var forecastEl = forecast[j];
 	
 	    // get UTC date from forecastEl
-	    var date = new Date('' + forecastEl.dt_txt).getDate();
+	    var date = new Date('' + forecastEl.dt_txt);
+	
+	    // skip if forecast el matches today's date
+	    // convert today's date to UTC for apples to apples comparison
+	    if (date.getDate() === today.getUTCDate()) {
+	      continue;
+	    }
 	
 	    // increment dayIdx if prev forecast date does not match current forecast date
 	    if (prevForecastElDate) {
-	      dayIdx += prevForecastElDate !== date ? 1 : 0;
+	      dayIdx += prevForecastElDate.getDate() !== date.getDate() ? 1 : 0;
 	    }
 	
 	    // break loop if going over 5 days of forecast
@@ -21148,17 +21151,79 @@
 	
 	// consolidates a day's 3-hourly forecast into a single consolidated forecast
 	var consolidateToDailyForecast = function consolidateToDailyForecast(forecastEl) {
-	  var dayOfTheWeek = forecastEl.date;
-	  var forecast = forecastEl.forecast;
+	  var _getWeatherMainAndTex = getWeatherMainAndText(forecastEl.forecast);
+	
+	  var _getWeatherMainAndTex2 = _slicedToArray(_getWeatherMainAndTex, 2);
+	
+	  var main = _getWeatherMainAndTex2[0];
+	  var text = _getWeatherMainAndTex2[1];
+	
+	  var humidity = getAveHumidity(forecastEl.forecast);
+	
+	  var _getHighLowTemp = getHighLowTemp(forecastEl.forecast);
+	
+	  var _getHighLowTemp2 = _slicedToArray(_getHighLowTemp, 2);
+	
+	  var low = _getHighLowTemp2[0];
+	  var high = _getHighLowTemp2[1];
+	
+	
+	  return {
+	    date: forecastEl.date.toDateString(),
+	    main: main,
+	    text: text,
+	    humidity: humidity,
+	    low: low,
+	    high: high
+	  };
 	};
 	
-	var getWeatherMain = function getWeatherMain(forecast) {};
+	var getWeatherMainAndText = function getWeatherMainAndText(forecast) {
+	  var mainTracker = {};
+	  var textTracker = {};
 	
-	var getWeatherText = function getWeatherText(forecast) {};
+	  forecast.forEach(function (forecastEl) {
+	    var main = forecastEl.weather[0].main;
+	    var text = forecastEl.weather[0].description;
 	
-	var getHighLowTemp = function getHighLowTemp(forecast) {};
+	    mainTracker['' + main] = mainTracker['' + main] ? mainTracker['' + main] + 1 : 1;
+	    textTracker['' + text] = textTracker['' + text] ? textTracker['' + text] + 1 : 1;
+	  });
 	
-	var getAveHumidity = function getAveHumidity(forecast) {};
+	  var dominantMain = Object.keys(mainTracker).reduce(function (a, b) {
+	    return mainTracker[a] > mainTracker[b] ? a : b;
+	  });
+	
+	  var dominantText = Object.keys(textTracker).reduce(function (a, b) {
+	    return textTracker[a] > textTracker[b] ? a : b;
+	  });
+	
+	  return [dominantMain, dominantText];
+	};
+	
+	var getHighLowTemp = function getHighLowTemp(forecast) {
+	  var minTemp = 1000;
+	  var maxTemp = -1000;
+	
+	
+	  forecast.forEach(function (forecastEl) {
+	    var temp = forecastEl.main.temp;
+	
+	    if (temp < minTemp) {
+	      minTemp = temp;
+	    } else if (temp > maxTemp) {
+	      maxTemp = temp;
+	    }
+	  });
+	
+	  return [minTemp, maxTemp];
+	};
+	
+	var getAveHumidity = function getAveHumidity(forecast) {
+	  return Math.round(forecast.reduce(function (acc, curr) {
+	    return acc + curr.main.humidity;
+	  }, 0) / forecast.length);
+	};
 	
 	exports.separateForecastByDay = separateForecastByDay;
 	exports.consolidateToDailyForecast = consolidateToDailyForecast;
