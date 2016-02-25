@@ -18,9 +18,10 @@ class NavBar extends React.Component {
       <div className="navbar navbar-inverse navbar-static-top">
         <div className="container">
           <div className="row">
-            <div className={ locBlurbClass }>Test</div>
+            <div className={ locBlurbClass }>{ this.props.location }</div>
 
-            <SearchBar gridSizes={ searchBarGridSizes }/>
+            <SearchBar gridSizes={ searchBarGridSizes }
+              loading={ this.props.loading }/>
           </div>
         </div>
       </div>

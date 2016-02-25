@@ -80,6 +80,7 @@ class SearchBar extends React.Component {
             id="autocomplete"
             className="form-control"
             placeholder="Search for a city..."
+            disabled={ this.props.loading }
             onFocus={ this.removeError }
             onChange={ this.removeError }
             onBlur={ this.removeError }/>

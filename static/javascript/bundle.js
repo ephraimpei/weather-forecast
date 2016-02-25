@@ -19707,6 +19707,10 @@
 	
 	var _weather_store2 = _interopRequireDefault(_weather_store);
 	
+	var _google_places_api_util = __webpack_require__(183);
+	
+	var _google_places_api_util2 = _interopRequireDefault(_google_places_api_util);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -19724,7 +19728,9 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(WeatherForecastApp).call(this, props));
 	
 	    _this.onChange = _this.onChange.bind(_this);
-	    _this.state = { forecast: {}, location: "" };
+	    _this.startLoading = _this.startLoading.bind(_this);
+	    _this.getCurrentPosition = _this.getCurrentPosition.bind(_this);
+	    _this.state = { forecast: {}, location: "", loading: false };
 	    return _this;
 	  }
 	
@@ -19732,6 +19738,8 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      _weather_store2.default.addChangeListener(this.onChange);
+	
+	      this.getCurrentPosition();
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
@@ -19739,27 +19747,50 @@
 	      _weather_store2.default.removeChangeListener(this.onChange);
 	    }
 	  }, {
+	    key: 'getCurrentPosition',
+	    value: function getCurrentPosition() {
+	      this.setState({ loading: true });
+	
+	      navigator.geolocation.getCurrentPosition(function (position) {
+	        _google_places_api_util2.default.getLocation(position.coords.latitude, position.coords.longitude);
+	      });
+	    }
+	  }, {
 	    key: 'onChange',
 	    value: function onChange() {
 	      this.setState({
 	        forecast: _weather_store2.default.getForecast(),
-	        location: _weather_store2.default.getLocation()
+	        location: _weather_store2.default.getLocation(),
+	        loading: false
 	      });
+	    }
+	  }, {
+	    key: 'startLoading',
+	    value: function startLoading() {
+	      this.setState({ loading: true });
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var forecastIndex = undefined;
 	
+	      var location = this.state.loading ? _react2.default.createElement(
+	        'span',
+	        null,
+	        'Finding current location ',
+	        _react2.default.createElement('i', { className: 'fa fa-refresh fa-spin' })
+	      ) : this.state.location;
+	
+	      // console.log(location);
 	      if (Object.keys(this.state.forecast).length !== 0) {
 	        forecastIndex = _react2.default.createElement(_forecast_index2.default, { forecast: this.state.forecast,
-	          location: this.state.location });
+	          location: location });
 	      }
 	
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-app' },
-	        _react2.default.createElement(_navbar2.default, null),
+	        _react2.default.createElement(_navbar2.default, { location: location, loading: this.state.loading }),
 	        forecastIndex
 	      );
 	    }
@@ -19929,9 +19960,10 @@
 	            _react2.default.createElement(
 	              "div",
 	              { className: locBlurbClass },
-	              "Test"
+	              this.props.location
 	            ),
-	            _react2.default.createElement(_search_bar2.default, { gridSizes: searchBarGridSizes })
+	            _react2.default.createElement(_search_bar2.default, { gridSizes: searchBarGridSizes,
+	              loading: this.props.loading })
 	          )
 	        )
 	      );
@@ -20089,6 +20121,7 @@
 	            id: "autocomplete",
 	            className: "form-control",
 	            placeholder: "Search for a city...",
+	            disabled: this.props.loading,
 	            onFocus: this.removeError,
 	            onChange: this.removeError,
 	            onBlur: this.removeError })
@@ -20988,7 +21021,7 @@
 	    key: 'render',
 	    value: function render() {
 	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
-	      console.log(forecastSplitByDay);
+	
 	      var forecastIndexItems = [0, 1, 2, 3, 4].map(function (n) {
 	        // return <ForecastIndexItem key={ n } forecast={} />;
 	
@@ -21074,41 +21107,43 @@
 	    separatedForecast[i] = { 'date': null, 'forecast': [] };
 	  }
 	
-	  forecast.forEach(function (forecastEl) {
-	    // convert UTC to local time for each forecast el
-	    var date = new Date(forecastEl.dt_txt + ' UTC').getDate();
+	  var _ref = [0];
+	  var dayIdx = _ref[0];
+	  var prevForecastElDate = _ref[1];
 	
-	    // get idx associated to which day forecast el belongs to
-	    // ie: day 1, idx = 0
-	    var idx = determineForecastIdx(date, now);
 	
-	    if (!separatedForecast[idx].date) {
-	      separatedForecast[idx].date = date;
+	  for (var j = 0; j < forecast.length; j++) {
+	    var forecastEl = forecast[j];
+	
+	    // get UTC date from forecastEl
+	    var date = new Date('' + forecastEl.dt_txt).getDate();
+	
+	    // increment dayIdx if prev forecast date does not match current forecast date
+	    if (prevForecastElDate) {
+	      dayIdx += prevForecastElDate !== date ? 1 : 0;
 	    }
 	
-	    separatedForecast[idx].forecast.push(forecastEl);
-	  });
+	    // break loop if going over 5 days of forecast
+	    if (dayIdx > 4) {
+	      break;
+	    }
+	
+	    // set date attribute if it doesn't exist
+	    if (!separatedForecast[dayIdx].date) {
+	      separatedForecast[dayIdx].date = date;
+	    }
+	
+	    // dayIdx represents the day from which the forecast el comes from
+	    separatedForecast[dayIdx].forecast.push(forecastEl);
+	
+	    prevForecastElDate = date;
+	  }
 	
 	  // can index separatedForecast to get the 3-hourly forecast for that day
 	  // ie: separatedForecast[0].forecast gives 3-hourly forecast for day 1
+	  // ie: separatedForecast[1].forecast gives 3-hourly forecast for day 2
+	  // etc...
 	  return separatedForecast;
-	};
-	
-	var determineForecastIdx = function determineForecastIdx(date, now) {
-	  // compare local date of forecast element with local date of day 1 (tmr), day 2, etc...
-	  // return index associated to the day of the forecast el
-	  // id: day 1, return idx = 0
-	  if (date === new Date(now + 86400000).getDate()) {
-	    return 0;
-	  } else if (date === new Date(now + 86400000 * 2).getDate()) {
-	    return 1;
-	  } else if (date === new Date(now + 86400000 * 3).getDate()) {
-	    return 2;
-	  } else if (date === new Date(now + 86400000 * 4).getDate()) {
-	    return 3;
-	  } else if (date === new Date(now + 86400000 * 5).getDate()) {
-	    return 4;
-	  }
 	};
 	
 	// consolidates a day's 3-hourly forecast into a single consolidated forecast
@@ -21127,6 +21162,53 @@
 	
 	exports.separateForecastByDay = separateForecastByDay;
 	exports.consolidateToDailyForecast = consolidateToDailyForecast;
+
+/***/ },
+/* 183 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _weather_api_util = __webpack_require__(175);
+	
+	var _weather_api_util2 = _interopRequireDefault(_weather_api_util);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var GooglePlacesApiUtil = function () {
+	  function GooglePlacesApiUtil() {
+	    _classCallCheck(this, GooglePlacesApiUtil);
+	  }
+	
+	  _createClass(GooglePlacesApiUtil, [{
+	    key: "getLocation",
+	    value: function getLocation(lat, lng, success) {
+	      var query = "latlng=" + lat + "," + lng;
+	      var format = "json";
+	      var apikey = "key=AIzaSyBqdLAPb71C43fwP7wWqxzUzYaXynZ_LBA";
+	      var types = "result_type=locality";
+	      var url = "https://maps.googleapis.com/maps/api/geocode/" + format + "?" + query + "&" + types + "&" + apikey;
+	
+	      // google places API is buggy - result_type isn't honored 100%
+	      // from testing, last element of the data.results array is the one we want
+	      $.get(url).done(function (data) {
+	        return _weather_api_util2.default.getForecastData(lat, lng, data.results.pop().formatted_address, success);
+	      });
+	    }
+	  }]);
+	
+	  return GooglePlacesApiUtil;
+	}();
+	
+	exports.default = new GooglePlacesApiUtil();
 
 /***/ }
 /******/ ]);

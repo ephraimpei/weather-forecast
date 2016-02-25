@@ -7,33 +7,34 @@ const separateForecastByDay = (forecast) => {
     separatedForecast[i] = { 'date': null, 'forecast': [] };
   }
 
-  forecast.forEach( (forecastEl) => {
-    // convert UTC to local time for each forecast el
-    const date = new Date(`${ forecastEl.dt_txt } UTC`).getDate();
+  let [dayIdx, prevForecastElDate] = [0, ];
 
-    // get idx associated to which day forecast el belongs to
-    // ie: day 1, idx = 0
-    const idx = determineForecastIdx(date, now);
+  for (let j = 0; j < forecast.length; j++) {
+    let forecastEl = forecast[j];
 
-    if (!separatedForecast[idx].date) { separatedForecast[idx].date = date; }
+    // get UTC date from forecastEl
+    const date = new Date(`${ forecastEl.dt_txt }`).getDate();
 
-    separatedForecast[idx].forecast.push(forecastEl);
-  });
+    // increment dayIdx if prev forecast date does not match current forecast date
+    if (prevForecastElDate) { dayIdx += prevForecastElDate !== date ? 1 : 0; }
+
+    // break loop if going over 5 days of forecast
+    if (dayIdx > 4) { break; }
+
+    // set date attribute if it doesn't exist
+    if (!separatedForecast[dayIdx].date) { separatedForecast[dayIdx].date = date; }
+
+    // dayIdx represents the day from which the forecast el comes from
+    separatedForecast[dayIdx].forecast.push(forecastEl);
+
+    prevForecastElDate = date;
+  }
 
   // can index separatedForecast to get the 3-hourly forecast for that day
   // ie: separatedForecast[0].forecast gives 3-hourly forecast for day 1
+  // ie: separatedForecast[1].forecast gives 3-hourly forecast for day 2
+  // etc...
   return separatedForecast;
-};
-
-const determineForecastIdx = (date, now) => {
-  // compare local date of forecast element with local date of day 1 (tmr), day 2, etc...
-  // return index associated to the day of the forecast el
-  // id: day 1, return idx = 0
-  if (date === new Date(now + 86400000).getDate()) { return 0; }
-  else if (date === new Date(now + 86400000 * 2).getDate()) { return 1; }
-  else if (date === new Date(now + 86400000 * 3).getDate()) { return 2; }
-  else if (date === new Date(now + 86400000 * 4).getDate()) { return 3; }
-  else if (date === new Date(now + 86400000 * 5).getDate()) { return 4; }
 };
 
 // consolidates a day's 3-hourly forecast into a single consolidated forecast
