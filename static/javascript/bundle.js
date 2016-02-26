@@ -19696,9 +19696,9 @@
 	
 	var _navbar2 = _interopRequireDefault(_navbar);
 	
-	var _pills = __webpack_require__(194);
+	var _tabs = __webpack_require__(252);
 	
-	var _pills2 = _interopRequireDefault(_pills);
+	var _tabs2 = _interopRequireDefault(_tabs);
 	
 	var _forecast_index = __webpack_require__(184);
 	
@@ -19795,7 +19795,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'container' },
-	          _react2.default.createElement(_pills2.default, null),
+	          _react2.default.createElement(_tabs2.default, null),
 	          _react2.default.createElement(
 	            'div',
 	            { className: 'tab-content' },
@@ -21259,7 +21259,8 @@
 	        var consolidatedForecast = (0, _forecast.consolidateToDailyForecast)(forecast);
 	        var gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
 	
-	        gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-3 col-xs-offset-0" : "";
+	        gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-0 col-xs-offset-0" : "";
+	        gridSizes += idx === 4 ? "col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0" : "";
 	
 	        return _react2.default.createElement(_forecast_index_item2.default, { key: idx,
 	          forecast: consolidatedForecast,
@@ -21761,7 +21762,65 @@
 	exports.default = Snow;
 
 /***/ },
-/* 194 */
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */,
+/* 219 */,
+/* 220 */,
+/* 221 */,
+/* 222 */,
+/* 223 */,
+/* 224 */,
+/* 225 */,
+/* 226 */,
+/* 227 */,
+/* 228 */,
+/* 229 */,
+/* 230 */,
+/* 231 */,
+/* 232 */,
+/* 233 */,
+/* 234 */,
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */,
+/* 244 */,
+/* 245 */,
+/* 246 */,
+/* 247 */,
+/* 248 */,
+/* 249 */,
+/* 250 */,
+/* 251 */,
+/* 252 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21784,16 +21843,16 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var Pills = function (_React$Component) {
-	  _inherits(Pills, _React$Component);
+	var Tabs = function (_React$Component) {
+	  _inherits(Tabs, _React$Component);
 	
-	  function Pills(props) {
-	    _classCallCheck(this, Pills);
+	  function Tabs(props) {
+	    _classCallCheck(this, Tabs);
 	
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Pills).call(this, props));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Tabs).call(this, props));
 	  }
 	
-	  _createClass(Pills, [{
+	  _createClass(Tabs, [{
 	    key: "render",
 	    value: function render() {
 	      return _react2.default.createElement(
@@ -21881,10 +21940,10 @@
 	    }
 	  }]);
 	
-	  return Pills;
+	  return Tabs;
 	}(_react2.default.Component);
 	
-	exports.default = Pills;
+	exports.default = Tabs;
 
 /***/ }
 /******/ ]);

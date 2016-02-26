@@ -89,6 +89,18 @@ html, body {
 .pac-icon {
   background-image: none !important; }
 
+.options {
+  margin-bottom: 20px !important; }
+
+@media only screen and (min-width: 992px) {
+  .options {
+    margin-left: calc(3.5% + 8.5px); } }
+@media only screen and (max-width: 992px) {
+  .options {
+    margin-left: 7.5px; } }
+@media only screen and (max-width: 768px) {
+  .options {
+    margin-left: 15px; } }
 .forecast-index-item {
   background-color: currentColor;
   min-height: 321px; }
@@ -104,9 +116,18 @@ html, body {
 .weather-info-wrapper {
   text-align: center; }
 
+@media only screen and (min-width: 992px) {
+  .index-item-grid-wrapper.col-md-offset-1 {
+    margin-left: 3.5% !important; }
+
+  .index-item-grid-wrapper.col-md-2 {
+    width: 18% !important; } }
 @media only screen and (max-width: 992px) {
   .forecast-index-item {
-    min-height: 0; } }
+    min-height: 0; }
+
+  .index-item-grid-wrapper.col-sm-6 {
+    width: 48% !important; } }
 @media only screen and (max-width: 768px) {
   .index-item-grid-wrapper {
     padding-left: 15px !important;

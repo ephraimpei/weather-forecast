@@ -1,6 +1,6 @@
 import React from 'react';
 
-class Pills extends React.Component {
+class Tabs extends React.Component {
   constructor (props) {
     super(props);
   }
@@ -32,4 +32,4 @@ class Pills extends React.Component {
   }
 }
 
-export default Pills;
+export default Tabs;

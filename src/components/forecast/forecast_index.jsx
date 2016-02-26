@@ -12,12 +12,13 @@ class ForecastIndex extends React.Component {
     const forecastSplitByDay = separateForecastByDay(this.props.forecast);
 
     console.log(forecastSplitByDay);
-    
+
     const forecastIndexItems = forecastSplitByDay.map( (forecast, idx) => {
       let consolidatedForecast = consolidateToDailyForecast(forecast);
       let gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
 
-      gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-3 col-xs-offset-0" : "";
+      gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-0 col-xs-offset-0" : "";
+      gridSizes += idx === 4 ? "col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0" : "";
 
       return (
         <ForecastIndexItem key={ idx }

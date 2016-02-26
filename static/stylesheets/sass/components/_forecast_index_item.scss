@@ -21,11 +21,29 @@
   text-align: center;
 }
 
+@media only screen and (min-width: 992px)
+{
+  .index-item-grid-wrapper.col-md-offset-1
+  {
+    margin-left: 3.5% !important;
+  }
+
+  .index-item-grid-wrapper.col-md-2
+  {
+    width: 18% !important;
+  }
+}
+
 @media only screen and (max-width: 992px)
 {
   .forecast-index-item
   {
     min-height: 0;
+  }
+
+  .index-item-grid-wrapper.col-sm-6
+  {
+    width: 48% !important;
   }
 }
 

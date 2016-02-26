@@ -1,0 +1,28 @@
+.options
+{
+  margin-bottom: 20px !important;
+}
+
+@media only screen and (min-width: 992px)
+{
+  .options
+  {
+    margin-left: calc(3.5% + 8.5px);
+  }
+}
+
+@media only screen and (max-width: 992px)
+{
+  .options
+  {
+    margin-left: 7.5px;
+  }
+}
+
+@media only screen and (max-width: 768px)
+{
+  .options
+  {
+    margin-left: 15px;
+  }
+}
