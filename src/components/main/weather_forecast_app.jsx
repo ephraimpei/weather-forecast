@@ -1,5 +1,6 @@
 import React from 'react';
 import NavBar from '../nav/navbar.jsx';
+import Pills from './pills.jsx';
 import ForecastIndex from '../forecast/forecast_index.jsx';
 import weatherStore from "../../stores/weather_store.js";
 import GooglePlacesApiUtil from "../../apiutil/google_places_api_util.js";
@@ -57,18 +58,24 @@ class WeatherForecastApp extends React.Component {
       );
     }
 
-    // <ul class="nav nav-pills">
-    //   <li role="presentation" class="active"><a href="#">Forecast</a></li>
-    //   <li role="presentation"><a href="#">Visualization</a></li>
-    //   <li role="presentation"><a href="#">Messages</a></li>
-    // </ul>
     console.log(this.state.forecast);
     return (
         <div className="main-app">
           <NavBar location={ location } loading={ this.state.loading }/>
 
+          <div className="container">
+            <Pills />
 
-          { forecastIndex }
+            <div className="tab-content">
+              <div className="tab-pane active" id="forecast">{ forecastIndex }</div>
+              <div className="tab-pane" id="forecast_viz">Forecast Viz</div>
+              <div className="tab-pane" id="day1_viz">Day 1 Viz</div>
+              <div className="tab-pane" id="day2_viz">Day 2 Viz</div>
+              <div className="tab-pane" id="day3_viz">Day 3 Viz</div>
+              <div className="tab-pane" id="day4_viz">Day 4 Viz</div>
+              <div className="tab-pane" id="day5_viz">Day 5 Viz</div>
+            </div>
+          </div>
         </div>
      );
   }
