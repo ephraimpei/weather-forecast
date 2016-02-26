@@ -29,7 +29,7 @@ class ForecastIndexItem extends React.Component {
             </div>
 
             <div className="weather-info-wrapper">
-              <h4 className="weather-info-item">{ this.props.forecast.text }</h4>
+              <h4 className="weather-info-item">{ mainWeather }</h4>
               <div className="weather-info-item">{ high }</div>
               <div className="weather-info-item">{ low }</div>
               <div className="weather-info-item">{ humidity }</div>

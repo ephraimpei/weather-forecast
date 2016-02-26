@@ -21093,13 +21093,7 @@
 	
 	// consolidates a day's 3-hourly forecast into a single consolidated forecast
 	var consolidateToDailyForecast = function consolidateToDailyForecast(forecastEl) {
-	  var _getWeatherMainAndTex = getWeatherMainAndText(forecastEl.forecast);
-	
-	  var _getWeatherMainAndTex2 = _slicedToArray(_getWeatherMainAndTex, 2);
-	
-	  var main = _getWeatherMainAndTex2[0];
-	  var text = _getWeatherMainAndTex2[1];
-	
+	  var main = getWeatherMain(forecastEl.forecast);
 	  var humidity = getAveHumidity(forecastEl.forecast);
 	
 	  var _getHighLowTemp = getHighLowTemp(forecastEl.forecast);
@@ -21113,34 +21107,28 @@
 	  return {
 	    date: forecastEl.date.toDateString(),
 	    main: main,
-	    text: text,
 	    humidity: humidity,
 	    low: low,
 	    high: high
 	  };
 	};
 	
-	var getWeatherMainAndText = function getWeatherMainAndText(forecast) {
+	var getWeatherMain = function getWeatherMain(forecast) {
 	  var mainTracker = {};
-	  var textTracker = {};
 	
 	  forecast.forEach(function (forecastEl) {
 	    var main = forecastEl.weather[0].main;
-	    var text = forecastEl.weather[0].description;
 	
 	    mainTracker['' + main] = mainTracker['' + main] ? mainTracker['' + main] + 1 : 1;
-	    textTracker['' + text] = textTracker['' + text] ? textTracker['' + text] + 1 : 1;
 	  });
+	
+	  console.log('maintracker ' + mainTracker);
 	
 	  var dominantMain = Object.keys(mainTracker).reduce(function (a, b) {
 	    return mainTracker[a] > mainTracker[b] ? a : b;
 	  });
 	
-	  var dominantText = Object.keys(textTracker).reduce(function (a, b) {
-	    return textTracker[a] > textTracker[b] ? a : b;
-	  });
-	
-	  return [dominantMain, dominantText];
+	  return dominantMain;
 	};
 	
 	var getHighLowTemp = function getHighLowTemp(forecast) {
@@ -21375,7 +21363,7 @@
 	              _react2.default.createElement(
 	                "h4",
 	                { className: "weather-info-item" },
-	                this.props.forecast.text
+	                mainWeather
 	              ),
 	              _react2.default.createElement(
 	                "div",

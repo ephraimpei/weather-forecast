@@ -35,10 +35,10 @@ html, body {
   min-height: 100%;
   position: relative; }
 
-@media only screen and (min-width: 750px) {
+@media only screen and (min-width: 768px) {
   #content {
     padding-bottom: 54.18px; } }
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 768px) {
   #content {
     padding-bottom: 101.45px; } }
 #footer-wrapper {
@@ -59,7 +59,7 @@ html, body {
   margin-top: 8px;
   margin-bottom: 8px; }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 768px) {
   .copyright {
     text-align: center; }
 
@@ -90,7 +90,8 @@ html, body {
   background-image: none !important; }
 
 .forecast-index-item {
-  background-color: currentColor; }
+  background-color: currentColor;
+  min-height: 321px; }
 
 .index-item-grid-wrapper {
   padding-left: 7.5px !important;
@@ -103,7 +104,10 @@ html, body {
 .weather-info-wrapper {
   text-align: center; }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 992px) {
+  .forecast-index-item {
+    min-height: 0; } }
+@media only screen and (max-width: 768px) {
   .index-item-grid-wrapper {
     padding-left: 15px !important;
     padding-right: 15px !important; } }

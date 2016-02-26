@@ -44,41 +44,35 @@ const separateForecastByDay = (forecast) => {
 
 // consolidates a day's 3-hourly forecast into a single consolidated forecast
 const consolidateToDailyForecast = (forecastEl) => {
-  let [ main, text ]= getWeatherMainAndText(forecastEl.forecast);
+  let main = getWeatherMain(forecastEl.forecast);
   let humidity = getAveHumidity(forecastEl.forecast);
   let [ low, high ] = getHighLowTemp(forecastEl.forecast);
 
   return {
     date: forecastEl.date.toDateString(),
     main: main,
-    text: text,
     humidity: humidity,
     low: low,
     high: high
   };
 };
 
-const getWeatherMainAndText = (forecast) => {
+const getWeatherMain = (forecast) => {
   let mainTracker = {};
-  let textTracker = {};
 
   forecast.forEach( (forecastEl) => {
     let main = forecastEl.weather[0].main;
-    let text = forecastEl.weather[0].description;
 
     mainTracker[`${ main }`] = mainTracker[`${ main }`] ? mainTracker[`${ main }`] + 1 : 1;
-    textTracker[`${ text }`] = textTracker[`${ text }`] ? textTracker[`${ text }`] + 1 : 1;
   });
+
+  console.log(`maintracker ${ mainTracker }`);
 
   let dominantMain = Object.keys(mainTracker).reduce( (a, b) => {
     return mainTracker[a] > mainTracker[b] ? a : b;
   });
 
-  let dominantText = Object.keys(textTracker).reduce( (a, b) => {
-    return textTracker[a] > textTracker[b] ? a : b;
-  });
-
-  return [ dominantMain, dominantText ];
+  return dominantMain;
 };
 
 const getHighLowTemp = (forecast) => {

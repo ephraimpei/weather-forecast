@@ -1,6 +1,7 @@
 .forecast-index-item
 {
   background-color: currentColor;
+  min-height: 321px;
 }
 
 .index-item-grid-wrapper
@@ -20,7 +21,15 @@
   text-align: center;
 }
 
-@media only screen and (max-width: 750px)
+@media only screen and (max-width: 992px)
+{
+  .forecast-index-item
+  {
+    min-height: 0;
+  }
+}
+
+@media only screen and (max-width: 768px)
 {
   .index-item-grid-wrapper
   {
