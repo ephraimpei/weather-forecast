@@ -25,6 +25,7 @@ The Weather Forecast app is a single page app that utilizes the OpenWeatherMap A
 
 * Webpack
 * jQuery
+* ReactRouter
 
 ### Vendor Technologies
 

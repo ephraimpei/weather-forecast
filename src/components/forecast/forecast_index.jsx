@@ -11,6 +11,8 @@ class ForecastIndex extends React.Component {
   render () {
     const forecastSplitByDay = separateForecastByDay(this.props.forecast);
 
+    console.log(forecastSplitByDay);
+    
     const forecastIndexItems = forecastSplitByDay.map( (forecast, idx) => {
       let consolidatedForecast = consolidateToDailyForecast(forecast);
       let gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";

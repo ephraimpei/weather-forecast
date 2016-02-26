@@ -13,14 +13,12 @@ const separateForecastByDay = (forecast) => {
   for (let j = 0; j < forecast.length; j++) {
     let forecastEl = forecast[j];
 
-    // get UTC date from forecastEl
     // .replace(/-/g, '/') added to resolve ES5 vs ISO-8601 specification gaps
     // fixes issue with date showing up as invalid in iOS
     const date = new Date(`${ forecastEl.dt_txt.replace(/-/g, '/') }`);
 
     // skip if forecast el matches today's date
-    // convert today's date to UTC for apples to apples comparison
-    if (date.getDate() === today.getUTCDate()) { continue; }
+    if (date.getDate() === today.getDate()) { continue; }
 
     // increment dayIdx if prev forecast date does not match current forecast date
     if (prevForecastElDate) { dayIdx += prevForecastElDate.getDate() !== date.getDate() ? 1 : 0; }

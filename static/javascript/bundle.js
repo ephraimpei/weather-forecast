@@ -19786,6 +19786,12 @@
 	          location: location });
 	      }
 	
+	      // <ul class="nav nav-pills">
+	      //   <li role="presentation" class="active"><a href="#">Forecast</a></li>
+	      //   <li role="presentation"><a href="#">Visualization</a></li>
+	      //   <li role="presentation"><a href="#">Messages</a></li>
+	      // </ul>
+	      console.log(this.state.forecast);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-app' },
@@ -19957,7 +19963,7 @@
 	            "div",
 	            { className: "row" },
 	            _react2.default.createElement(
-	              "div",
+	              "h4",
 	              { className: locBlurbClass },
 	              this.props.location
 	            ),
@@ -21009,14 +21015,12 @@
 	  for (var j = 0; j < forecast.length; j++) {
 	    var forecastEl = forecast[j];
 	
-	    // get UTC date from forecastEl
 	    // .replace(/-/g, '/') added to resolve ES5 vs ISO-8601 specification gaps
 	    // fixes issue with date showing up as invalid in iOS
 	    var date = new Date('' + forecastEl.dt_txt.replace(/-/g, '/'));
 	
 	    // skip if forecast el matches today's date
-	    // convert today's date to UTC for apples to apples comparison
-	    if (date.getDate() === today.getUTCDate()) {
+	    if (date.getDate() === today.getDate()) {
 	      continue;
 	    }
 	
@@ -21221,6 +21225,8 @@
 	    key: 'render',
 	    value: function render() {
 	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
+	
+	      console.log(forecastSplitByDay);
 	
 	      var forecastIndexItems = forecastSplitByDay.map(function (forecast, idx) {
 	        var consolidatedForecast = (0, _forecast.consolidateToDailyForecast)(forecast);

@@ -57,9 +57,17 @@ class WeatherForecastApp extends React.Component {
       );
     }
 
+    // <ul class="nav nav-pills">
+    //   <li role="presentation" class="active"><a href="#">Forecast</a></li>
+    //   <li role="presentation"><a href="#">Visualization</a></li>
+    //   <li role="presentation"><a href="#">Messages</a></li>
+    // </ul>
+    console.log(this.state.forecast);
     return (
         <div className="main-app">
           <NavBar location={ location } loading={ this.state.loading }/>
+
+
           { forecastIndex }
         </div>
      );
