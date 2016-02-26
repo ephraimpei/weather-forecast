@@ -1,8 +1,10 @@
 # Weather Forecast App
 
-[Live Site][live]
+[Live Site][live] - Make sure you are using http not https (OpenWeatherMap's free API service does not support SSL)
 
-[live]: placeholder
+[live]: http://ephraimpei-weather-forecast.herokuapp.com
+
+
 
 ## Summary
 
