@@ -47,13 +47,15 @@ const consolidateToDailyForecast = (forecastEl) => {
   let main = getWeatherMain(forecastEl.forecast);
   let humidity = getAveHumidity(forecastEl.forecast);
   let [ low, high ] = getHighLowTemp(forecastEl.forecast);
+  let ave = Math.round((((high + low) / 2) * 100) / 100);
 
   return {
-    date: forecastEl.date.toDateString(),
+    date: forecastEl.date,
     main: main,
     humidity: humidity,
     low: low,
-    high: high
+    high: high,
+    ave: ave
   };
 };
 

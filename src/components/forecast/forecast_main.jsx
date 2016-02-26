@@ -12,7 +12,7 @@ class ForecastMain extends React.Component {
       <div className="forecast-main container">
         <Tabs />
 
-        <TabsContent forecastIndex={ this.props.forecastIndex }/>
+        <TabsContent forecast={ this.props.forecast } />
       </div>
     );
   }

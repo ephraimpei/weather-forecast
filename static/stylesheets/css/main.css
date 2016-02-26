@@ -157,5 +157,7 @@ html, body {
 
   .index-item-grid-wrapper.col-xs-12 {
     width: 100% !important; } }
+.five-day-forecast svg:not(:root) {
+  overflow: visible; }
 
 /*# sourceMappingURL=main.css.map */

@@ -29,7 +29,7 @@ class Footer extends React.Component {
               <img className="social-media-icon img-circle" src="/images/icons/linkedin.png"/>
             </a></li>
 
-            <li><a href="https://github.com/ephraimpei">
+            <li><a href="https://github.com/ephraimpei/weather-forecast">
               <img className="social-media-icon img-circle" src="/images/icons/github.png"/>
             </a></li>
 

@@ -2,7 +2,6 @@ import React from 'react';
 import Welcome from './welcome.jsx';
 import NavBar from '../nav/navbar.jsx';
 import ForecastMain from '../forecast/forecast_main.jsx';
-import ForecastIndex from '../forecast/forecast_index.jsx';
 import weatherStore from "../../stores/weather_store.js";
 import GooglePlacesApiUtil from "../../apiutil/google_places_api_util.js";
 
@@ -53,10 +52,13 @@ class WeatherForecastApp extends React.Component {
   }
 
   render () {
-    let forecastIndex = <ForecastIndex forecast={ this.state.forecast } location={ location }/>;
+    // let forecastIndex = <ForecastIndex forecast={ this.state.forecast } location={ location }/>;
 
-    let render = this.state.welcome ? <Welcome getCurrentPosition={ this.getCurrentPosition }
-      loading={ this.state.loading }/> : <ForecastMain forecastIndex={ forecastIndex } />;
+    // let render = this.state.welcome ? <Welcome getCurrentPosition={ this.getCurrentPosition }
+    //   loading={ this.state.loading }/> : <ForecastMain forecastIndex={ forecastIndex } />;
+
+    let welcomeOrForecast = this.state.welcome ? <Welcome getCurrentPosition={ this.getCurrentPosition }
+      loading={ this.state.loading }/> : <ForecastMain forecast={ this.state.forecast } />;
 
     let location = this.state.loading ? (
       <span>Getting location <i className="fa fa-refresh fa-spin"></i></span>
@@ -77,7 +79,7 @@ class WeatherForecastApp extends React.Component {
             startLoading={ this.startLoading }
             loading={ this.state.loading }/>
 
-          { render }
+          { welcomeOrForecast }
         </div>
      );
   }

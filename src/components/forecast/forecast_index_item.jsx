@@ -10,8 +10,8 @@ class ForecastIndexItem extends React.Component {
     const high = `High: ${ this.props.forecast.high }°F`;
     const low = `Low: ${ this.props.forecast.low }°F`;
     const humidity = `Humidity: ${ this.props.forecast.humidity }%`;
-    const day = this.props.forecast.date.split(" ")[0];
-    const date = this.props.forecast.date.split(" ").slice(1).join(" ");
+    const day = this.props.forecast.date.toDateString().split(" ")[0];
+    const date = this.props.forecast.date.toDateString().split(" ").slice(1).join(" ");
     const gridSizes = `index-item-grid-wrapper ${ this.props.gridSizes }`;
     const mainWeather = this.props.forecast.main;
 

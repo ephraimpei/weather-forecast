@@ -19704,10 +19704,6 @@
 	
 	var _forecast_main2 = _interopRequireDefault(_forecast_main);
 	
-	var _forecast_index = __webpack_require__(184);
-	
-	var _forecast_index2 = _interopRequireDefault(_forecast_index);
-	
 	var _weather_store = __webpack_require__(179);
 	
 	var _weather_store2 = _interopRequireDefault(_weather_store);
@@ -19786,10 +19782,13 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var forecastIndex = _react2.default.createElement(_forecast_index2.default, { forecast: this.state.forecast, location: location });
+	      // let forecastIndex = <ForecastIndex forecast={ this.state.forecast } location={ location }/>;
 	
-	      var render = this.state.welcome ? _react2.default.createElement(_welcome2.default, { getCurrentPosition: this.getCurrentPosition,
-	        loading: this.state.loading }) : _react2.default.createElement(_forecast_main2.default, { forecastIndex: forecastIndex });
+	      // let render = this.state.welcome ? <Welcome getCurrentPosition={ this.getCurrentPosition }
+	      //   loading={ this.state.loading }/> : <ForecastMain forecastIndex={ forecastIndex } />;
+	
+	      var welcomeOrForecast = this.state.welcome ? _react2.default.createElement(_welcome2.default, { getCurrentPosition: this.getCurrentPosition,
+	        loading: this.state.loading }) : _react2.default.createElement(_forecast_main2.default, { forecast: this.state.forecast });
 	
 	      var location = this.state.loading ? _react2.default.createElement(
 	        'span',
@@ -19813,7 +19812,7 @@
 	          getCurrentPosition: this.getCurrentPosition,
 	          startLoading: this.startLoading,
 	          loading: this.state.loading }),
-	        render
+	        welcomeOrForecast
 	      );
 	    }
 	  }]);
@@ -19906,7 +19905,7 @@
 	              null,
 	              _react2.default.createElement(
 	                "a",
-	                { href: "https://github.com/ephraimpei" },
+	                { href: "https://github.com/ephraimpei/weather-forecast" },
 	                _react2.default.createElement("img", { className: "social-media-icon img-circle", src: "/images/icons/github.png" })
 	              )
 	            )
@@ -21102,13 +21101,15 @@
 	  var low = _getHighLowTemp2[0];
 	  var high = _getHighLowTemp2[1];
 	
+	  var ave = Math.round((high + low) / 2 * 100 / 100);
 	
 	  return {
-	    date: forecastEl.date.toDateString(),
+	    date: forecastEl.date,
 	    main: main,
 	    humidity: humidity,
 	    low: low,
-	    high: high
+	    high: high,
+	    ave: ave
 	  };
 	};
 	
@@ -21328,8 +21329,8 @@
 	      var high = "High: " + this.props.forecast.high + "°F";
 	      var low = "Low: " + this.props.forecast.low + "°F";
 	      var humidity = "Humidity: " + this.props.forecast.humidity + "%";
-	      var day = this.props.forecast.date.split(" ")[0];
-	      var date = this.props.forecast.date.split(" ").slice(1).join(" ");
+	      var day = this.props.forecast.date.toDateString().split(" ")[0];
+	      var date = this.props.forecast.date.toDateString().split(" ").slice(1).join(" ");
 	      var gridSizes = "index-item-grid-wrapper " + this.props.gridSizes;
 	      var mainWeather = this.props.forecast.main;
 	
@@ -21827,7 +21828,7 @@
 /* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -21838,6 +21839,14 @@
 	var _react = __webpack_require__(5);
 	
 	var _react2 = _interopRequireDefault(_react);
+	
+	var _forecast_index = __webpack_require__(184);
+	
+	var _forecast_index2 = _interopRequireDefault(_forecast_index);
+	
+	var _five_day_forecast_line_graph = __webpack_require__(258);
+	
+	var _five_day_forecast_line_graph2 = _interopRequireDefault(_five_day_forecast_line_graph);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -21857,45 +21866,45 @@
 	  }
 	
 	  _createClass(TabsContent, [{
-	    key: "render",
+	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "tab-content" },
+	        'div',
+	        { className: 'tab-content' },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane active", id: "forecast" },
-	          this.props.forecastIndex
+	          'div',
+	          { className: 'tab-pane active', id: 'forecast' },
+	          _react2.default.createElement(_forecast_index2.default, { forecast: this.props.forecast })
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane", id: "forecast_viz" },
-	          "Forecast Viz"
+	          'div',
+	          { className: 'tab-pane', id: 'forecast_viz' },
+	          _react2.default.createElement(_five_day_forecast_line_graph2.default, { forecast: this.props.forecast })
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane", id: "day1_viz" },
-	          "Day 1 Viz"
+	          'div',
+	          { className: 'tab-pane', id: 'day1_viz' },
+	          'Day 1 Viz'
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane", id: "day2_viz" },
-	          "Day 2 Viz"
+	          'div',
+	          { className: 'tab-pane', id: 'day2_viz' },
+	          'Day 2 Viz'
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane", id: "day3_viz" },
-	          "Day 3 Viz"
+	          'div',
+	          { className: 'tab-pane', id: 'day3_viz' },
+	          'Day 3 Viz'
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane", id: "day4_viz" },
-	          "Day 4 Viz"
+	          'div',
+	          { className: 'tab-pane', id: 'day4_viz' },
+	          'Day 4 Viz'
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "tab-pane", id: "day5_viz" },
-	          "Day 5 Viz"
+	          'div',
+	          { className: 'tab-pane', id: 'day5_viz' },
+	          'Day 5 Viz'
 	        )
 	      );
 	    }
@@ -22080,7 +22089,7 @@
 	        'div',
 	        { className: 'forecast-main container' },
 	        _react2.default.createElement(_tabs2.default, null),
-	        _react2.default.createElement(_tabs_content2.default, { forecastIndex: this.props.forecastIndex })
+	        _react2.default.createElement(_tabs_content2.default, { forecast: this.props.forecast })
 	      );
 	    }
 	  }]);
@@ -22173,6 +22182,167 @@
 	}(_react2.default.Component);
 	
 	exports.default = Welcome;
+
+/***/ },
+/* 257 */,
+/* 258 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _forecast = __webpack_require__(182);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var FiveDayForecast = function (_React$Component) {
+	  _inherits(FiveDayForecast, _React$Component);
+	
+	  function FiveDayForecast(props) {
+	    _classCallCheck(this, FiveDayForecast);
+	
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FiveDayForecast).call(this, props));
+	
+	    _this.updateGraph = _this.updateGraph.bind(_this);
+	    return _this;
+	  }
+	
+	  _createClass(FiveDayForecast, [{
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(nextProps.forecast);
+	      var consolidatedDailyForecasts = forecastSplitByDay.map(function (forecast) {
+	        return (0, _forecast.consolidateToDailyForecast)(forecast);
+	      });
+	
+	      d3.selectAll("path").remove();
+	
+	      this.updateGraph(consolidatedDailyForecasts);
+	    }
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
+	      var consolidatedDailyForecasts = forecastSplitByDay.map(function (forecast) {
+	        return (0, _forecast.consolidateToDailyForecast)(forecast);
+	      });
+	
+	      var width = 1000,
+	          height = 600,
+	          padding = 50;
+	
+	      // create an svg container
+	      var svg = d3.select(".five-day-forecast").append("svg:svg").attr("width", width).attr("height", height);
+	
+	      // define the y scale  (vertical)
+	      var yScale = d3.scale.linear().domain([0, 100]) // values between 0 and 100
+	      .range([height - padding, padding]); // map these to the chart height, less padding.
+	      //REMEMBER: y axis range has the bigger number first because the y value of zero is at the top of chart and increases as you go down.
+	
+	      // define the x scale (horizontal)
+	      var mindate = new Date(),
+	          maxdate = new Date(this.props.forecast.slice(-1)[0].dt_txt.replace(/-/g, '/'));
+	
+	      var xScale = d3.time.scale().domain([mindate, maxdate]) // values between for month of january
+	      .range([padding, width - padding * 2]); // map these the the chart width = total width minus padding at both sides
+	
+	      // define the y axis
+	      var yAxis = d3.svg.axis().orient("left").scale(yScale).tickPadding(10);
+	
+	      // define the y axis
+	      var xAxis = d3.svg.axis().orient("bottom").scale(xScale).ticks(d3.time.days, 1).tickFormat(d3.time.format('%a %d')).tickPadding(8);
+	
+	      // draw y axis with labels and move in from the size by the amount of padding
+	      // label the x axis
+	      svg.append("g").attr("transform", "translate(" + padding + ",0)").call(yAxis).append("text");
+	
+	      // draw x axis with labels and move to the bottom of the chart area
+	      svg.append("g").attr("class", "xaxis") // give it a class so it can be used to select only xaxis labels  below
+	      .attr("transform", "translate(0," + (height - padding) + ")").call(xAxis);
+	
+	      // label the y axis
+	      svg.append("text").attr("text-anchor", "middle") // this makes it easy to centre the text as the transform is applied to the anchor
+	      .attr("transform", "translate(" + padding / 8 + "," + padding * 2 + ")rotate(-90)") // text is drawn off the screen top left, move down and out and rotate
+	      .text("Temp (F)");
+	
+	      this.svg = svg;
+	
+	      var lineHighFn = d3.svg.line().interpolate("linear").x(function (d) {
+	        return xScale(d.date);
+	      }).y(function (d) {
+	        return yScale(d.high);
+	      });
+	
+	      var lineLowFn = d3.svg.line().interpolate("linear").x(function (d) {
+	        return xScale(d.date);
+	      }).y(function (d) {
+	        return yScale(d.low);
+	      });
+	
+	      var lineAveFn = d3.svg.line().interpolate("linear").x(function (d) {
+	        return xScale(d.date);
+	      }).y(function (d) {
+	        return yScale(d.ave);
+	      });
+	
+	      this.drawHiTempLine = lineHighFn;
+	      this.drawLowTempLine = lineLowFn;
+	      this.drawAveTempLine = lineAveFn;
+	
+	      // draw high temp lines
+	      svg.append('svg:path').attr('d', lineHighFn(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'red').attr('stroke-width', 2).attr('fill', 'none');
+	
+	      // draw low temp lines
+	      svg.append('svg:path').attr('d', lineLowFn(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'steelblue').attr('stroke-width', 2).attr('fill', 'none');
+	
+	      // draw ave temp lines
+	      svg.append('svg:path').attr('d', lineAveFn(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'green').attr('stroke-width', 2).attr('fill', 'none');
+	
+	      // create labels for each line
+	      svg.append("text").attr("transform", "translate(" + (width + 3) + "," + yScale(consolidatedDailyForecasts[4].high) + ")").attr("dy", ".35em").attr("dx", "-17em").attr("text-anchor", "start").style("fill", "red").text("High");
+	
+	      svg.append("text").attr("transform", "translate(" + (width + 3) + "," + yScale(consolidatedDailyForecasts[4].ave) + ")").attr("dy", ".35em").attr("dx", "-17em").attr("text-anchor", "start").style("fill", "green").text("Ave");
+	
+	      svg.append("text").attr("transform", "translate(" + (width + 3) + "," + yScale(consolidatedDailyForecasts[4].low) + ")").attr("dy", ".35em").attr("dx", "-17em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
+	    }
+	  }, {
+	    key: 'updateGraph',
+	    value: function updateGraph(consolidatedDailyForecasts) {
+	      // draw high temp lines
+	      this.svg.append('svg:path').attr('d', this.drawHiTempLine(consolidatedDailyForecasts)).attr('stroke', 'red').attr('stroke-width', 2).attr('fill', 'none');
+	
+	      // draw low temp lines
+	      this.svg.append('svg:path').attr('d', this.drawLowTempLine(consolidatedDailyForecasts)).attr('stroke', 'steelblue').attr('stroke-width', 2).attr('fill', 'none');
+	
+	      // draw ave temp lines
+	      this.svg.append('svg:path').attr('d', this.drawAveTempLine(consolidatedDailyForecasts)).attr('stroke', 'green').attr('stroke-width', 2).attr('fill', 'none');
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement('div', { className: 'five-day-forecast' });
+	    }
+	  }]);
+	
+	  return FiveDayForecast;
+	}(_react2.default.Component);
+	
+	exports.default = FiveDayForecast;
 
 /***/ }
 /******/ ]);

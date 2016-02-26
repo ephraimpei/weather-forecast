@@ -4,8 +4,6 @@
 
 [live]: http://ephraimpei-weather-forecast.herokuapp.com
 
-
-
 ## Summary
 
 The Weather Forecast app is a single page app that utilizes the OpenWeatherMap API from http://openweathermap.org/api to extract weather data and display a 5 day forecast.  It also uses the autocomplete service from the Google Places API to extract the coordinates that will be used to make the call to the OpenWeatherMap API.
@@ -37,7 +35,7 @@ The Weather Forecast app is a single page app that utilizes the OpenWeatherMap A
 
 ### App features
 
-* Automatically gets local weather data upon loading
+* Gets the current location weather with a one click button
 * Google Place API's autocomplete feature allows you to search for any city in the world
 * Queries and processes OpenWeatherMap API's data into a five day forecast
 * Mobile, tablet, and desktop responsive courtesy of Bootstrap features
