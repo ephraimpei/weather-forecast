@@ -66,22 +66,22 @@ const getWeatherMain = (forecast) => {
     mainTracker[`${ main }`] = mainTracker[`${ main }`] ? mainTracker[`${ main }`] + 1 : 1;
   });
 
-  console.log(`maintracker ${ mainTracker }`);
-
-  let dominantMain = Object.keys(mainTracker).reduce( (a, b) => {
-    return mainTracker[a] > mainTracker[b] ? a : b;
-  });
+  let dominantMain = Object.keys.length === 1 ? Object.keys(mainTracker)[0] :
+    Object.keys(mainTracker).reduce( (a, b) => {
+      return mainTracker[a] > mainTracker[b] ? a : b;
+    });
 
   return dominantMain;
 };
 
 const getHighLowTemp = (forecast) => {
-  let [ minTemp, maxTemp ] = [1000, -1000];
+  let minTemp, maxTemp;
 
-  forecast.forEach ((forecastEl) => {
+  forecast.forEach ((forecastEl, idx) => {
     let temp = forecastEl.main.temp;
 
-    if (temp < minTemp) { minTemp = temp; }
+    if (idx === 0) { [ minTemp, maxTemp ] = [ temp, temp ];}
+    else if (temp < minTemp) { minTemp = temp; }
     else if (temp > maxTemp) { maxTemp = temp; }
   });
 

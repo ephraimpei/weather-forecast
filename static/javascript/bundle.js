@@ -19692,13 +19692,17 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _welcome = __webpack_require__(256);
+	
+	var _welcome2 = _interopRequireDefault(_welcome);
+	
 	var _navbar = __webpack_require__(165);
 	
 	var _navbar2 = _interopRequireDefault(_navbar);
 	
-	var _tabs = __webpack_require__(252);
+	var _forecast_main = __webpack_require__(255);
 	
-	var _tabs2 = _interopRequireDefault(_tabs);
+	var _forecast_main2 = _interopRequireDefault(_forecast_main);
 	
 	var _forecast_index = __webpack_require__(184);
 	
@@ -19731,7 +19735,7 @@
 	    _this.onChange = _this.onChange.bind(_this);
 	    _this.startLoading = _this.startLoading.bind(_this);
 	    _this.getCurrentPosition = _this.getCurrentPosition.bind(_this);
-	    _this.state = { forecast: {}, location: "", loading: false };
+	    _this.state = { forecast: {}, location: "", loading: false, welcome: true };
 	    return _this;
 	  }
 	
@@ -19739,8 +19743,6 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      _weather_store2.default.addChangeListener(this.onChange);
-	
-	      this.getCurrentPosition();
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
@@ -19749,7 +19751,9 @@
 	    }
 	  }, {
 	    key: 'getCurrentPosition',
-	    value: function getCurrentPosition() {
+	    value: function getCurrentPosition(e) {
+	      e.preventDefault();
+	
 	      this.setState({ loading: true });
 	
 	      navigator.geolocation.getCurrentPosition(function (position) {
@@ -19759,10 +19763,19 @@
 	  }, {
 	    key: 'onChange',
 	    value: function onChange() {
+	      var successMsg = document.getElementById("forecast-success");
+	
+	      successMsg.classList.remove("fade");
+	
+	      setTimeout(function () {
+	        return successMsg.classList.add("fade");
+	      }, 2000);
+	
 	      this.setState({
 	        forecast: _weather_store2.default.getForecast(),
 	        location: _weather_store2.default.getLocation(),
-	        loading: false
+	        loading: false,
+	        welcome: false
 	      });
 	    }
 	  }, {
@@ -19773,69 +19786,34 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var forecastIndex = undefined;
+	      var forecastIndex = _react2.default.createElement(_forecast_index2.default, { forecast: this.state.forecast, location: location });
+	
+	      var render = this.state.welcome ? _react2.default.createElement(_welcome2.default, { getCurrentPosition: this.getCurrentPosition,
+	        loading: this.state.loading }) : _react2.default.createElement(_forecast_main2.default, { forecastIndex: forecastIndex });
 	
 	      var location = this.state.loading ? _react2.default.createElement(
 	        'span',
 	        null,
-	        'Finding current location ',
+	        'Getting location ',
 	        _react2.default.createElement('i', { className: 'fa fa-refresh fa-spin' })
 	      ) : this.state.location;
 	
-	      if (Object.keys(this.state.forecast).length !== 0) {
-	        forecastIndex = _react2.default.createElement(_forecast_index2.default, { forecast: this.state.forecast,
-	          location: location });
-	      }
+	      // if (Object.keys(this.state.forecast).length !== 0) {
+	      //   forecastIndex = (
+	      //     <ForecastIndex forecast={ this.state.forecast }
+	      //       location={ location }/>
+	      //   );
+	      // }
 	
 	      console.log(this.state.forecast);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-app' },
-	        _react2.default.createElement(_navbar2.default, { location: location, loading: this.state.loading }),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'container' },
-	          _react2.default.createElement(_tabs2.default, null),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'tab-content' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane active', id: 'forecast' },
-	              forecastIndex
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane', id: 'forecast_viz' },
-	              'Forecast Viz'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane', id: 'day1_viz' },
-	              'Day 1 Viz'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane', id: 'day2_viz' },
-	              'Day 2 Viz'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane', id: 'day3_viz' },
-	              'Day 3 Viz'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane', id: 'day4_viz' },
-	              'Day 4 Viz'
-	            ),
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'tab-pane', id: 'day5_viz' },
-	              'Day 5 Viz'
-	            )
-	          )
-	        )
+	        _react2.default.createElement(_navbar2.default, { location: location,
+	          getCurrentPosition: this.getCurrentPosition,
+	          startLoading: this.startLoading,
+	          loading: this.state.loading }),
+	        render
 	      );
 	    }
 	  }]);
@@ -19987,10 +19965,13 @@
 	  _createClass(NavBar, [{
 	    key: "render",
 	    value: function render() {
-	      var blurbGridSizes = "col-md-8 col-sm-7 col-xs-12";
+	      var blurbGridSizes = "col-md-6 col-sm-5 col-xs-8";
+	      var btnGridSizes = "col-md-2 col-sm-2 col-xs-4";
 	      var searchBarGridSizes = "col-md-4 col-sm-5 col-xs-12";
 	
 	      var locBlurbClass = (0, _classnames2.default)("curr-loc-blurb", "navbar-text", "pull-left", blurbGridSizes);
+	
+	      var btnClass = (0, _classnames2.default)("my-loc-btn", "btn", "btn-default", btnGridSizes);
 	
 	      return _react2.default.createElement(
 	        "div",
@@ -20006,8 +19987,25 @@
 	              { className: locBlurbClass },
 	              this.props.location
 	            ),
+	            _react2.default.createElement(
+	              "button",
+	              { className: btnClass, disabled: this.props.loading,
+	                onClick: this.props.getCurrentPosition },
+	              "My location ",
+	              _react2.default.createElement("i", { className: "fa fa-globe" })
+	            ),
 	            _react2.default.createElement(_search_bar2.default, { gridSizes: searchBarGridSizes,
-	              loading: this.props.loading })
+	              startLoading: this.props.startLoading })
+	          ),
+	          _react2.default.createElement(
+	            "div",
+	            { id: "forecast-success", className: "alert alert-success fade" },
+	            _react2.default.createElement(
+	              "strong",
+	              null,
+	              "Yay!"
+	            ),
+	            " Forecast loaded successfully!"
 	          )
 	        )
 	      );
@@ -20107,6 +20105,8 @@
 	  }, {
 	    key: "handleSearchSubmission",
 	    value: function handleSearchSubmission(result) {
+	      this.props.startLoading();
+	
 	      var location = result.formatted_address;
 	      var lat = result.geometry.location.lat();
 	      var lng = result.geometry.location.lng();
@@ -20165,7 +20165,6 @@
 	            id: "autocomplete",
 	            className: "form-control",
 	            placeholder: "Search for a city...",
-	            disabled: this.props.loading,
 	            onFocus: this.removeError,
 	            onChange: this.removeError,
 	            onBlur: this.removeError })
@@ -21122,9 +21121,7 @@
 	    mainTracker['' + main] = mainTracker['' + main] ? mainTracker['' + main] + 1 : 1;
 	  });
 	
-	  console.log('maintracker ' + mainTracker);
-	
-	  var dominantMain = Object.keys(mainTracker).reduce(function (a, b) {
+	  var dominantMain = Object.keys.length === 1 ? Object.keys(mainTracker)[0] : Object.keys(mainTracker).reduce(function (a, b) {
 	    return mainTracker[a] > mainTracker[b] ? a : b;
 	  });
 	
@@ -21132,14 +21129,16 @@
 	};
 	
 	var getHighLowTemp = function getHighLowTemp(forecast) {
-	  var minTemp = 1000;
-	  var maxTemp = -1000;
+	  var minTemp = undefined,
+	      maxTemp = undefined;
 	
-	
-	  forecast.forEach(function (forecastEl) {
+	  forecast.forEach(function (forecastEl, idx) {
 	    var temp = forecastEl.main.temp;
 	
-	    if (temp < minTemp) {
+	    if (idx === 0) {
+	      minTemp = temp;
+	      maxTemp = temp;
+	    } else if (temp < minTemp) {
 	      minTemp = temp;
 	    } else if (temp > maxTemp) {
 	      maxTemp = temp;
@@ -21256,6 +21255,10 @@
 	      console.log(forecastSplitByDay);
 	
 	      var forecastIndexItems = forecastSplitByDay.map(function (forecast, idx) {
+	        if (forecast.forecast.length === 0) {
+	          return;
+	        }
+	
 	        var consolidatedForecast = (0, _forecast.consolidateToDailyForecast)(forecast);
 	        var gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
 	
@@ -21820,7 +21823,91 @@
 /* 249 */,
 /* 250 */,
 /* 251 */,
-/* 252 */
+/* 252 */,
+/* 253 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var TabsContent = function (_React$Component) {
+	  _inherits(TabsContent, _React$Component);
+	
+	  function TabsContent(props) {
+	    _classCallCheck(this, TabsContent);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(TabsContent).call(this, props));
+	  }
+	
+	  _createClass(TabsContent, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "tab-content" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane active", id: "forecast" },
+	          this.props.forecastIndex
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane", id: "forecast_viz" },
+	          "Forecast Viz"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane", id: "day1_viz" },
+	          "Day 1 Viz"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane", id: "day2_viz" },
+	          "Day 2 Viz"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane", id: "day3_viz" },
+	          "Day 3 Viz"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane", id: "day4_viz" },
+	          "Day 4 Viz"
+	        ),
+	        _react2.default.createElement(
+	          "div",
+	          { className: "tab-pane", id: "day5_viz" },
+	          "Day 5 Viz"
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return TabsContent;
+	}(_react2.default.Component);
+	
+	exports.default = TabsContent;
+
+/***/ },
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21944,6 +22031,148 @@
 	}(_react2.default.Component);
 	
 	exports.default = Tabs;
+
+/***/ },
+/* 255 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _tabs = __webpack_require__(254);
+	
+	var _tabs2 = _interopRequireDefault(_tabs);
+	
+	var _tabs_content = __webpack_require__(253);
+	
+	var _tabs_content2 = _interopRequireDefault(_tabs_content);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var ForecastMain = function (_React$Component) {
+	  _inherits(ForecastMain, _React$Component);
+	
+	  function ForecastMain(props) {
+	    _classCallCheck(this, ForecastMain);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ForecastMain).call(this, props));
+	  }
+	
+	  _createClass(ForecastMain, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'forecast-main container' },
+	        _react2.default.createElement(_tabs2.default, null),
+	        _react2.default.createElement(_tabs_content2.default, { forecastIndex: this.props.forecastIndex })
+	      );
+	    }
+	  }]);
+	
+	  return ForecastMain;
+	}(_react2.default.Component);
+	
+	exports.default = ForecastMain;
+
+/***/ },
+/* 256 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(5);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var Welcome = function (_React$Component) {
+	  _inherits(Welcome, _React$Component);
+	
+	  function Welcome(props) {
+	    _classCallCheck(this, Welcome);
+	
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Welcome).call(this, props));
+	  }
+	
+	  _createClass(Welcome, [{
+	    key: "render",
+	    value: function render() {
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "welcome container" },
+	        _react2.default.createElement(
+	          "div",
+	          { className: "jumbotron" },
+	          _react2.default.createElement(
+	            "h1",
+	            null,
+	            "Welcome to Ephraim's Forecast Web App!"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            "To get started, go ahead and ",
+	            _react2.default.createElement(
+	              "strong",
+	              null,
+	              "search for a city"
+	            ),
+	            " or click on the button in the navigation bar to ",
+	            _react2.default.createElement(
+	              "strong",
+	              null,
+	              "get your current location's weather."
+	            ),
+	            " Or... just click here:"
+	          ),
+	          _react2.default.createElement(
+	            "p",
+	            null,
+	            _react2.default.createElement(
+	              "button",
+	              { className: "btn btn-primary btn-lg", disabled: this.props.loading,
+	                onClick: this.props.getCurrentPosition },
+	              "Get the weather!"
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return Welcome;
+	}(_react2.default.Component);
+	
+	exports.default = Welcome;
 
 /***/ }
 /******/ ]);

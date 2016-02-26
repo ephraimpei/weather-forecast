@@ -1,6 +1,7 @@
 import React from 'react';
+import Welcome from './welcome.jsx';
 import NavBar from '../nav/navbar.jsx';
-import Tabs from './tabs.jsx';
+import ForecastMain from '../forecast/forecast_main.jsx';
 import ForecastIndex from '../forecast/forecast_index.jsx';
 import weatherStore from "../../stores/weather_store.js";
 import GooglePlacesApiUtil from "../../apiutil/google_places_api_util.js";
@@ -11,20 +12,20 @@ class WeatherForecastApp extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.startLoading = this.startLoading.bind(this);
     this.getCurrentPosition = this.getCurrentPosition.bind(this);
-    this.state = { forecast: {}, location: "", loading: false };
+    this.state = { forecast: {}, location: "", loading: false, welcome: true };
   }
 
   componentDidMount () {
     weatherStore.addChangeListener(this.onChange);
-
-    this.getCurrentPosition();
   }
 
   componentWillUnmount () {
     weatherStore.removeChangeListener(this.onChange);
   }
 
-  getCurrentPosition () {
+  getCurrentPosition (e) {
+    e.preventDefault();
+
     this.setState({ loading: true });
 
     navigator.geolocation.getCurrentPosition( (position) => {
@@ -33,10 +34,17 @@ class WeatherForecastApp extends React.Component {
   }
 
   onChange () {
+    let successMsg = document.getElementById("forecast-success");
+
+    successMsg.classList.remove("fade");
+
+    setTimeout( () => successMsg.classList.add("fade"), 2000);
+
     this.setState({
       forecast: weatherStore.getForecast(),
       location: weatherStore.getLocation(),
-      loading: false
+      loading: false,
+      welcome: false
     });
   }
 
@@ -45,37 +53,31 @@ class WeatherForecastApp extends React.Component {
   }
 
   render () {
-    let forecastIndex;
+    let forecastIndex = <ForecastIndex forecast={ this.state.forecast } location={ location }/>;
+
+    let render = this.state.welcome ? <Welcome getCurrentPosition={ this.getCurrentPosition }
+      loading={ this.state.loading }/> : <ForecastMain forecastIndex={ forecastIndex } />;
 
     let location = this.state.loading ? (
-      <span>Finding current location <i className="fa fa-refresh fa-spin"></i></span>
+      <span>Getting location <i className="fa fa-refresh fa-spin"></i></span>
     ) : this.state.location;
 
-    if (Object.keys(this.state.forecast).length !== 0) {
-      forecastIndex = (
-        <ForecastIndex forecast={ this.state.forecast }
-          location={ location }/>
-      );
-    }
+    // if (Object.keys(this.state.forecast).length !== 0) {
+    //   forecastIndex = (
+    //     <ForecastIndex forecast={ this.state.forecast }
+    //       location={ location }/>
+    //   );
+    // }
 
     console.log(this.state.forecast);
     return (
         <div className="main-app">
-          <NavBar location={ location } loading={ this.state.loading }/>
+          <NavBar location={ location }
+            getCurrentPosition={ this.getCurrentPosition }
+            startLoading={ this.startLoading }
+            loading={ this.state.loading }/>
 
-          <div className="container">
-            <Tabs />
-
-            <div className="tab-content">
-              <div className="tab-pane active" id="forecast">{ forecastIndex }</div>
-              <div className="tab-pane" id="forecast_viz">Forecast Viz</div>
-              <div className="tab-pane" id="day1_viz">Day 1 Viz</div>
-              <div className="tab-pane" id="day2_viz">Day 2 Viz</div>
-              <div className="tab-pane" id="day3_viz">Day 3 Viz</div>
-              <div className="tab-pane" id="day4_viz">Day 4 Viz</div>
-              <div className="tab-pane" id="day5_viz">Day 5 Viz</div>
-            </div>
-          </div>
+          { render }
         </div>
      );
   }

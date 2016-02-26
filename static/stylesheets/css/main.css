@@ -31,6 +31,21 @@ html, body {
 .social-media-icon {
   width: 32px; }
 
+#forecast-success {
+  opacity: 1;
+  position: absolute;
+  z-index: 1;
+  transition: opacity 1s ease-in-out;
+  left: 40vw;
+  margin-top: 15px; }
+
+#forecast-success.fade {
+  opacity: 0; }
+
+.search-error {
+  position: absolute;
+  width: calc(100% - 30px); }
+
 #wrapper {
   min-height: 100%;
   position: relative; }
@@ -69,6 +84,16 @@ html, body {
   margin-left: 0 !important;
   margin-right: 0 !important; }
 
+.my-loc-btn {
+  margin-top: 8px;
+  margin-bottom: 8px; }
+
+@media only screen and (max-width: 768px) {
+  .my-loc-btn {
+    margin-top: 10px; }
+
+  .my-loc-btn.col-xs-4 {
+    width: 29.5%; } }
 .search-bar {
   margin-top: 8px;
   margin-bottom: 8px; }
@@ -76,9 +101,6 @@ html, body {
     height: 33px; }
   .search-bar .input-group-btn button {
     height: 33px; }
-  .search-bar .search-error {
-    position: absolute;
-    width: calc(100% - 30px); }
 
 /* remove 'powered by Google' logo from autocomplete list */
 .pac-container:after {

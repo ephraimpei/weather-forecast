@@ -40,6 +40,8 @@ class SearchBar extends React.Component {
   }
 
   handleSearchSubmission (result) {
+    this.props.startLoading();
+
     const location = result.formatted_address;
     const lat = result.geometry.location.lat();
     const lng = result.geometry.location.lng();
@@ -80,7 +82,6 @@ class SearchBar extends React.Component {
             id="autocomplete"
             className="form-control"
             placeholder="Search for a city..."
-            disabled={ this.props.loading }
             onFocus={ this.removeError }
             onChange={ this.removeError }
             onBlur={ this.removeError }/>

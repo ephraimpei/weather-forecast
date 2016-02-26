@@ -1,0 +1,19 @@
+#forecast-success
+{
+  opacity: 1;
+  position: absolute;
+  z-index: 1;
+  transition: opacity 1s ease-in-out;
+  left: 40vw;
+  margin-top: 15px;
+}
+
+#forecast-success.fade
+{
+  opacity: 0
+}
+
+.search-error {
+  position: absolute;
+  width: calc(100% - 30px);
+}

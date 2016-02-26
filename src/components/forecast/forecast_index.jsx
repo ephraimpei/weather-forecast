@@ -14,6 +14,8 @@ class ForecastIndex extends React.Component {
     console.log(forecastSplitByDay);
 
     const forecastIndexItems = forecastSplitByDay.map( (forecast, idx) => {
+      if (forecast.forecast.length === 0) { return; }
+
       let consolidatedForecast = consolidateToDailyForecast(forecast);
       let gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
 
