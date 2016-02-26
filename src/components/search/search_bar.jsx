@@ -31,7 +31,7 @@ class SearchBar extends React.Component {
         const place = autocomplete.getPlace();
 
         if (typeof place !== "undefined" && place.geometry) { resolve(place); }
-        else { reject("Place not found!"); }
+        else { reject("Please pick from the autocomplete!"); }
       });
 
       getPlace.then((result) => this.handleSearchSubmission(result),
