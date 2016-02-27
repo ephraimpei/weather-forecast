@@ -13,9 +13,11 @@ class FiveDayForecast extends React.Component {
       return consolidateToDailyForecast(forecast);
     });
 
-    d3.selectAll("path").remove();
+    var width = 1000,
+        height = 600,
+        padding = 50;
 
-    this.updateGraph(consolidatedDailyForecasts);
+    this.updateGraph(consolidatedDailyForecasts, width, height, padding);
   }
 
   componentDidMount () {
@@ -33,8 +35,10 @@ class FiveDayForecast extends React.Component {
       .attr("width", width)
       .attr("height", height);
 
+    this.svg = svg;
+
     // define the y scale  (vertical)
-    var yScale = d3.scale.linear()
+    this.yScale = d3.scale.linear()
       .domain([0, 100])    // values between 0 and 100
       .range([height - padding, padding]);   // map these to the chart height, less padding.
              //REMEMBER: y axis range has the bigger number first because the y value of zero is at the top of chart and increases as you go down.
@@ -43,20 +47,20 @@ class FiveDayForecast extends React.Component {
     var mindate = new Date(),
         maxdate = new Date(this.props.forecast.slice(-1)[0].dt_txt.replace(/-/g, '/'));
 
-    var xScale = d3.time.scale()
+    this.xScale = d3.time.scale()
       .domain([mindate, maxdate])    // values between for month of january
       .range([padding, width - padding * 2]);   // map these the the chart width = total width minus padding at both sides
 
     // define the y axis
     var yAxis = d3.svg.axis()
         .orient("left")
-        .scale(yScale)
+        .scale(this.yScale)
         .tickPadding(10);
 
     // define the y axis
     var xAxis = d3.svg.axis()
         .orient("bottom")
-        .scale(xScale)
+        .scale(this.xScale)
         .ticks(d3.time.days, 1)
         .tickFormat(d3.time.format('%a %d'))
         .tickPadding(8);
@@ -82,81 +86,56 @@ class FiveDayForecast extends React.Component {
 
     this.svg = svg;
 
-    var lineHighFn = d3.svg.line()
+    this.drawHiTempLine = d3.svg.line()
         .interpolate("linear")
-        .x(function(d) { return xScale(d.date); })
-        .y(function(d) { return yScale(d.high); });
+        .x( (d) => this.xScale(d.date) )
+        .y( (d) => this.yScale(d.high) );
 
-    var lineLowFn = d3.svg.line()
+    this.drawLowTempLine = d3.svg.line()
         .interpolate("linear")
-        .x(function(d) { return xScale(d.date); })
-        .y(function(d) { return yScale(d.low); });
+        .x( (d) => this.xScale(d.date) )
+        .y( (d) => this.yScale(d.low) );
 
 
-    var lineAveFn = d3.svg.line()
+    this.drawAveTempLine = d3.svg.line()
         .interpolate("linear")
-        .x(function(d) { return xScale(d.date); })
-        .y(function(d) { return yScale(d.ave); });
+        .x( (d) => this.xScale(d.date) )
+        .y( (d) => this.yScale(d.ave) );
 
-
-    this.drawHiTempLine = lineHighFn;
-    this.drawLowTempLine = lineLowFn;
-    this.drawAveTempLine = lineAveFn;
-
-    // draw high temp lines
-    svg.append('svg:path')
-      .attr('d', lineHighFn(consolidatedDailyForecasts))
-      .attr('class', 'line')
-      .attr('stroke', 'red')
-      .attr('stroke-width', 2)
-      .attr('fill', 'none');
-
-    // draw low temp lines
-    svg.append('svg:path')
-      .attr('d', lineLowFn(consolidatedDailyForecasts))
-      .attr('class', 'line')
-      .attr('stroke', 'steelblue')
-      .attr('stroke-width', 2)
-      .attr('fill', 'none');
-
-    // draw ave temp lines
-    svg.append('svg:path')
-      .attr('d', lineAveFn(consolidatedDailyForecasts))
-      .attr('class', 'line')
-      .attr('stroke', 'green')
-      .attr('stroke-width', 2)
-      .attr('fill', 'none');
-
-    // create labels for each line
-    svg.append("text")
-    	.attr("transform", "translate(" + (width+3) + "," + yScale(consolidatedDailyForecasts[4].high) + ")")
-    	.attr("dy", ".35em")
-      .attr("dx", "-17em")
-    	.attr("text-anchor", "start")
-    	.style("fill", "red")
-    	.text("High");
-
-    svg.append("text")
-  		.attr("transform", "translate(" + (width+3) + "," + yScale(consolidatedDailyForecasts[4].ave) + ")")
-  		.attr("dy", ".35em")
-      .attr("dx", "-17em")
-  		.attr("text-anchor", "start")
-  		.style("fill", "green")
-  		.text("Ave");
-
-  	svg.append("text")
-  		.attr("transform", "translate(" + (width+3) + "," + yScale(consolidatedDailyForecasts[4].low) + ")")
-  		.attr("dy", ".35em")
-      .attr("dx", "-17em")
-  		.attr("text-anchor", "start")
-  		.style("fill", "steelblue")
-  		.text("Low");
+    this.updateGraph(consolidatedDailyForecasts, width, height, padding);
+    // // draw high temp lines
+    // svg.append('svg:path')
+    //   .attr('d', this.drawHiTempLine(consolidatedDailyForecasts))
+    //   .attr('class', 'line')
+    //   .attr('stroke', 'red')
+    //   .attr('stroke-width', 2)
+    //   .attr('fill', 'none');
+    //
+    // // draw low temp lines
+    // svg.append('svg:path')
+    //   .attr('d', this.drawLowTempLine(consolidatedDailyForecasts))
+    //   .attr('class', 'line')
+    //   .attr('stroke', 'steelblue')
+    //   .attr('stroke-width', 2)
+    //   .attr('fill', 'none');
+    //
+    // // draw ave temp lines
+    // svg.append('svg:path')
+    //   .attr('d', this.drawAveTempLine(consolidatedDailyForecasts))
+    //   .attr('class', 'line')
+    //   .attr('stroke', 'green')
+    //   .attr('stroke-width', 2)
+    //   .attr('fill', 'none');
   }
 
-  updateGraph (consolidatedDailyForecasts) {
+  updateGraph (consolidatedDailyForecasts, width, heigh, padding) {
+    d3.selectAll(".line").remove();
+    d3.selectAll(".line-label").remove();
+
     // draw high temp lines
     this.svg.append('svg:path')
       .attr('d', this.drawHiTempLine(consolidatedDailyForecasts))
+      .attr('class', 'line')
       .attr('stroke', 'red')
       .attr('stroke-width', 2)
       .attr('fill', 'none');
@@ -164,6 +143,7 @@ class FiveDayForecast extends React.Component {
     // draw low temp lines
     this.svg.append('svg:path')
       .attr('d', this.drawLowTempLine(consolidatedDailyForecasts))
+      .attr('class', 'line')
       .attr('stroke', 'steelblue')
       .attr('stroke-width', 2)
       .attr('fill', 'none');
@@ -171,9 +151,38 @@ class FiveDayForecast extends React.Component {
     // draw ave temp lines
     this.svg.append('svg:path')
       .attr('d', this.drawAveTempLine(consolidatedDailyForecasts))
+      .attr('class', 'line')
       .attr('stroke', 'green')
       .attr('stroke-width', 2)
       .attr('fill', 'none');
+
+    // create labels for each line
+    this.svg.append("text")
+    	.attr("transform", "translate(" + (width+3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")")
+      .attr("class", "line-label")
+    	.attr("dy", ".35em")
+      .attr("dx", "-17em")
+    	.attr("text-anchor", "start")
+    	.style("fill", "red")
+    	.text("High");
+
+    this.svg.append("text")
+  		.attr("transform", "translate(" + (width+3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")")
+      .attr("class", "line-label")
+  		.attr("dy", ".35em")
+      .attr("dx", "-17em")
+  		.attr("text-anchor", "start")
+  		.style("fill", "green")
+  		.text("Ave");
+
+  	this.svg.append("text")
+  		.attr("transform", "translate(" + (width+3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")")
+      .attr("class", "line-label")
+  		.attr("dy", ".35em")
+      .attr("dx", "-17em")
+  		.attr("text-anchor", "start")
+  		.style("fill", "steelblue")
+  		.text("Low");
   }
 
   render () {
