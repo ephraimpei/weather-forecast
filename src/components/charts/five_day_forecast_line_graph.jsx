@@ -39,17 +39,17 @@ class FiveDayForecast extends React.Component {
 
     // define the y scale  (vertical)
     this.yScale = d3.scale.linear()
-      .domain([0, 100])    // values between 0 and 100
-      .range([height - padding, padding]);   // map these to the chart height, less padding.
-             //REMEMBER: y axis range has the bigger number first because the y value of zero is at the top of chart and increases as you go down.
+      .domain([0, 100])
+      .range([height - padding, padding]);
 
     // define the x scale (horizontal)
-    var mindate = new Date(),
-        maxdate = new Date(this.props.forecast.slice(-1)[0].dt_txt.replace(/-/g, '/'));
+    var mindate = new Date();
+    var now = new Date();
+    var maxdate = new Date(now.setDate(now.getDate() + 5));
 
     this.xScale = d3.time.scale()
-      .domain([mindate, maxdate])    // values between for month of january
-      .range([padding, width - padding * 2]);   // map these the the chart width = total width minus padding at both sides
+      .domain([mindate, maxdate])
+      .range([padding, width - padding * 2]);
 
     // define the y axis
     var yAxis = d3.svg.axis()
@@ -74,14 +74,14 @@ class FiveDayForecast extends React.Component {
 
     // draw x axis with labels and move to the bottom of the chart area
     svg.append("g")
-        .attr("class", "xaxis")   // give it a class so it can be used to select only xaxis labels  below
+        .attr("class", "xaxis")
         .attr("transform", "translate(0," + (height - padding) + ")")
         .call(xAxis);
 
     // label the y axis
     svg.append("text")
-       .attr("text-anchor", "middle")  // this makes it easy to centre the text as the transform is applied to the anchor
-       .attr("transform", "translate("+ (padding/8) +","+(padding * 2)+")rotate(-90)")  // text is drawn off the screen top left, move down and out and rotate
+       .attr("text-anchor", "middle")
+       .attr("transform", "translate("+ (padding/8) +","+(padding * 2)+")rotate(-90)")
        .text("Temp (F)");
 
     this.svg = svg;
@@ -103,29 +103,6 @@ class FiveDayForecast extends React.Component {
         .y( (d) => this.yScale(d.ave) );
 
     this.updateGraph(consolidatedDailyForecasts, width, height, padding);
-    // // draw high temp lines
-    // svg.append('svg:path')
-    //   .attr('d', this.drawHiTempLine(consolidatedDailyForecasts))
-    //   .attr('class', 'line')
-    //   .attr('stroke', 'red')
-    //   .attr('stroke-width', 2)
-    //   .attr('fill', 'none');
-    //
-    // // draw low temp lines
-    // svg.append('svg:path')
-    //   .attr('d', this.drawLowTempLine(consolidatedDailyForecasts))
-    //   .attr('class', 'line')
-    //   .attr('stroke', 'steelblue')
-    //   .attr('stroke-width', 2)
-    //   .attr('fill', 'none');
-    //
-    // // draw ave temp lines
-    // svg.append('svg:path')
-    //   .attr('d', this.drawAveTempLine(consolidatedDailyForecasts))
-    //   .attr('class', 'line')
-    //   .attr('stroke', 'green')
-    //   .attr('stroke-width', 2)
-    //   .attr('fill', 'none');
   }
 
   updateGraph (consolidatedDailyForecasts, width, heigh, padding) {
