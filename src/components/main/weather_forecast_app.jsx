@@ -63,15 +63,7 @@ class WeatherForecastApp extends React.Component {
     let location = this.state.loading ? (
       <span>Getting location <i className="fa fa-refresh fa-spin"></i></span>
     ) : this.state.location;
-
-    // if (Object.keys(this.state.forecast).length !== 0) {
-    //   forecastIndex = (
-    //     <ForecastIndex forecast={ this.state.forecast }
-    //       location={ location }/>
-    //   );
-    // }
-
-    console.log(this.state.forecast);
+    
     return (
         <div className="main-app">
           <NavBar location={ location }

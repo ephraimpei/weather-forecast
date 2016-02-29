@@ -9,9 +9,13 @@ class ForecastIndex extends React.Component {
   }
 
   render () {
+    console.log(this.props.forecast);
+
     const forecastSplitByDay = separateForecastByDay(this.props.forecast);
 
     console.log(forecastSplitByDay);
+
+    const length = forecastSplitByDay.length;
 
     const forecastIndexItems = forecastSplitByDay.map( (forecast, idx) => {
       if (forecast.forecast.length === 0) { return; }
@@ -20,7 +24,7 @@ class ForecastIndex extends React.Component {
       let gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
 
       gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-0 col-xs-offset-0" : "";
-      gridSizes += idx === 4 ? "col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0" : "";
+      gridSizes += idx === length - 1 ? "col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0" : "";
 
       return (
         <ForecastIndexItem key={ idx }

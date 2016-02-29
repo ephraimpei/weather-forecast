@@ -138,7 +138,7 @@ class FiveDayForecast extends React.Component {
     	.attr("transform", "translate(" + (width+3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")")
       .attr("class", "line-label")
     	.attr("dy", ".35em")
-      .attr("dx", "-17em")
+      .attr("dx", "-10em")
     	.attr("text-anchor", "start")
     	.style("fill", "red")
     	.text("High");
@@ -147,7 +147,7 @@ class FiveDayForecast extends React.Component {
   		.attr("transform", "translate(" + (width+3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")")
       .attr("class", "line-label")
   		.attr("dy", ".35em")
-      .attr("dx", "-17em")
+      .attr("dx", "-10em")
   		.attr("text-anchor", "start")
   		.style("fill", "green")
   		.text("Ave");
@@ -156,7 +156,7 @@ class FiveDayForecast extends React.Component {
   		.attr("transform", "translate(" + (width+3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")")
       .attr("class", "line-label")
   		.attr("dy", ".35em")
-      .attr("dx", "-17em")
+      .attr("dx", "-10em")
   		.attr("text-anchor", "start")
   		.style("fill", "steelblue")
   		.text("Low");

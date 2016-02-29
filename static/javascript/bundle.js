@@ -19797,14 +19797,6 @@
 	        _react2.default.createElement('i', { className: 'fa fa-refresh fa-spin' })
 	      ) : this.state.location;
 	
-	      // if (Object.keys(this.state.forecast).length !== 0) {
-	      //   forecastIndex = (
-	      //     <ForecastIndex forecast={ this.state.forecast }
-	      //       location={ location }/>
-	      //   );
-	      // }
-	
-	      console.log(this.state.forecast);
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main-app' },
@@ -21082,6 +21074,12 @@
 	    prevForecastElDate = date;
 	  }
 	
+	  // check if last element of separatedForecast has data elements.  If no, remove it.
+	  // this is likely caused by OpenWeatherMap's API not providing enough data for a 5 day forecast.
+	  if (separatedForecast.slice(-1).length === 0) {
+	    separatedForecast.splice(-1);
+	  }
+	
 	  // can index separatedForecast to get the 3-hourly forecast for that day
 	  // ie: separatedForecast[0].forecast gives 3-hourly forecast for day 1
 	  // ie: separatedForecast[1].forecast gives 3-hourly forecast for day 2
@@ -21251,9 +21249,13 @@
 	  _createClass(ForecastIndex, [{
 	    key: 'render',
 	    value: function render() {
+	      console.log(this.props.forecast);
+	
 	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
 	
 	      console.log(forecastSplitByDay);
+	
+	      var length = forecastSplitByDay.length;
 	
 	      var forecastIndexItems = forecastSplitByDay.map(function (forecast, idx) {
 	        if (forecast.forecast.length === 0) {
@@ -21264,7 +21266,7 @@
 	        var gridSizes = "col-lg-2 col-md-2 col-sm-6 col-xs-12 ";
 	
 	        gridSizes += idx === 0 ? "col-lg-offset-1 col-md-offset-1 col-sm-offset-0 col-xs-offset-0" : "";
-	        gridSizes += idx === 4 ? "col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0" : "";
+	        gridSizes += idx === length - 1 ? "col-lg-offset-0 col-md-offset-0 col-sm-offset-3 col-xs-offset-0" : "";
 	
 	        return _react2.default.createElement(_forecast_index_item2.default, { key: idx,
 	          forecast: consolidatedForecast,
@@ -22319,11 +22321,11 @@
 	      this.svg.append('svg:path').attr('d', this.drawAveTempLine(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'green').attr('stroke-width', 2).attr('fill', 'none');
 	
 	      // create labels for each line
-	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-17em").attr("text-anchor", "start").style("fill", "red").text("High");
+	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "red").text("High");
 	
-	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-17em").attr("text-anchor", "start").style("fill", "green").text("Ave");
+	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "green").text("Ave");
 	
-	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-17em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
+	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
 	    }
 	  }, {
 	    key: 'render',
