@@ -17,3 +17,18 @@
   position: absolute;
   width: calc(100% - 30px);
 }
+
+@media only screen and (max-width: 768px)
+{
+  #forecast-success
+  {
+    position: relative;
+    left: 0;
+    margin-top: 0;
+  }
+  #forecast-success.fade
+  {
+    display: none
+  }
+
+}

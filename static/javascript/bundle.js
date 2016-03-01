@@ -22221,6 +22221,14 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(FiveDayForecast).call(this, props));
 	
 	    _this.updateGraph = _this.updateGraph.bind(_this);
+	    _this.drawGridLines = _this.drawGridLines.bind(_this);
+	    _this.makeXAxisGrid = _this.makeXAxisGrid.bind(_this);
+	    _this.makeYAxisGrid = _this.makeYAxisGrid.bind(_this);
+	
+	    // svg dimension
+	    _this.width = 1000;
+	    _this.height = 600;
+	    _this.padding = 50;
 	    return _this;
 	  }
 	
@@ -22232,11 +22240,8 @@
 	        return (0, _forecast.consolidateToDailyForecast)(forecast);
 	      });
 	
-	      var width = 1000,
-	          height = 600,
-	          padding = 50;
-	
-	      this.updateGraph(consolidatedDailyForecasts, width, height, padding);
+	      // this.updateGraph(consolidatedDailyForecasts, width, height, padding);
+	      this.updateGraph(consolidatedDailyForecasts);
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -22248,42 +22253,78 @@
 	        return (0, _forecast.consolidateToDailyForecast)(forecast);
 	      });
 	
-	      var width = 1000,
-	          height = 600,
-	          padding = 50;
+	      // create tooltip container
+	      var tip = d3.tip().attr('class', 'd3-tip').html(function (d) {
+	        var date = d.date;
+	        var temp = d.low || d.ave || d.high;
+	        var tooltip = _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              'Date'
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              'Temp'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              date
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              temp
+	            )
+	          )
+	        );
+	
+	        return tooltip;
+	      });
 	
 	      // create an svg container
-	      var svg = d3.select(".five-day-forecast").append("svg:svg").attr("width", width).attr("height", height);
+	      var svg = d3.select("#five-day-forecast").append("svg:svg").attr("viewBox", "0 0 1000 600").attr("perserveAspectRatio", "xMaxYMax").attr("class", "col-lg-12 col-md-12 col-sm-12 col-xs-12").attr("width", this.width).attr("height", this.height);
 	
 	      this.svg = svg;
 	
+	      // invoke the tool tip
+	      svg.call(tip);
+	
 	      // define the y scale  (vertical)
-	      this.yScale = d3.scale.linear().domain([0, 100]).range([height - padding, padding]);
+	      this.yScale = d3.scale.linear().domain([0, 100]).range([this.height - this.padding, this.padding]);
 	
 	      // define the x scale (horizontal)
 	      var mindate = new Date();
 	      var now = new Date();
 	      var maxdate = new Date(now.setDate(now.getDate() + 5));
 	
-	      this.xScale = d3.time.scale().domain([mindate, maxdate]).range([padding, width - padding * 2]);
+	      this.xScale = d3.time.scale().domain([mindate, maxdate]).range([this.padding, this.width - this.padding * 2]);
 	
 	      // define the y axis
-	      var yAxis = d3.svg.axis().orient("left").scale(this.yScale).tickPadding(10);
+	      var yAxis = d3.svg.axis().orient("left").scale(this.yScale).ticks(10);
 	
 	      // define the y axis
-	      var xAxis = d3.svg.axis().orient("bottom").scale(this.xScale).ticks(d3.time.days, 1).tickFormat(d3.time.format('%a %d')).tickPadding(8);
+	      var xAxis = d3.svg.axis().orient("bottom").scale(this.xScale).ticks(d3.time.days, 1).tickFormat(d3.time.format('%a %d'));
 	
-	      // draw y axis with labels and move in from the size by the amount of padding
-	      // label the x axis
-	      svg.append("g").attr("transform", "translate(" + padding + ",0)").call(yAxis).append("text");
+	      // draw y axis
+	      svg.append("g").attr("class", "yaxis").attr("transform", "translate(" + this.padding + ",0)").call(yAxis);
 	
-	      // draw x axis with labels and move to the bottom of the chart area
-	      svg.append("g").attr("class", "xaxis").attr("transform", "translate(0," + (height - padding) + ")").call(xAxis);
+	      // draw x axis
+	      svg.append("g").attr("class", "xaxis").attr("transform", "translate(0," + (this.height - this.padding) + ")").call(xAxis);
 	
 	      // label the y axis
-	      svg.append("text").attr("text-anchor", "middle").attr("transform", "translate(" + padding / 8 + "," + padding * 2 + ")rotate(-90)").text("Temp (F)");
-	
-	      this.svg = svg;
+	      svg.append("text").attr("text-anchor", "middle").attr("transform", "translate(" + this.padding / 8 + "," + this.padding * 2 + ")rotate(-90)").text("Temp (F)");
 	
 	      this.drawHiTempLine = d3.svg.line().interpolate("linear").x(function (d) {
 	        return _this2.xScale(d.date);
@@ -22303,13 +22344,22 @@
 	        return _this2.yScale(d.ave);
 	      });
 	
-	      this.updateGraph(consolidatedDailyForecasts, width, height, padding);
+	      this.drawGridLines();
+	      this.updateGraph(consolidatedDailyForecasts);
+	    }
+	  }, {
+	    key: 'drawGridLines',
+	    value: function drawGridLines() {
+	      this.svg.append("g").attr("class", "grid").attr("transform", "translate(0," + (this.height - this.padding) + ")").call(this.makeXAxisGrid().tickSize(-(this.height - this.padding * 2), 0, 0).tickFormat(""));
+	
+	      this.svg.append("g").attr("class", "grid").attr("transform", "translate(" + this.padding + ",0)").call(this.makeYAxisGrid().tickSize(-(this.width - this.padding * 3), 0, 0).tickFormat(""));
 	    }
 	  }, {
 	    key: 'updateGraph',
-	    value: function updateGraph(consolidatedDailyForecasts, width, heigh, padding) {
+	    value: function updateGraph(consolidatedDailyForecasts) {
 	      d3.selectAll(".line").remove();
 	      d3.selectAll(".line-label").remove();
+	      d3.selectAll(".d3-tip").remove();
 	
 	      // draw high temp lines
 	      this.svg.append('svg:path').attr('d', this.drawHiTempLine(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'red').attr('stroke-width', 2).attr('fill', 'none');
@@ -22321,16 +22371,26 @@
 	      this.svg.append('svg:path').attr('d', this.drawAveTempLine(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'green').attr('stroke-width', 2).attr('fill', 'none');
 	
 	      // create labels for each line
-	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "red").text("High");
+	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "red").text("High");
 	
-	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "green").text("Ave");
+	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "green").text("Ave");
 	
-	      this.svg.append("text").attr("transform", "translate(" + (width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
+	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
+	    }
+	  }, {
+	    key: 'makeXAxisGrid',
+	    value: function makeXAxisGrid() {
+	      return d3.svg.axis().scale(this.xScale).orient("bottom").ticks(5);
+	    }
+	  }, {
+	    key: 'makeYAxisGrid',
+	    value: function makeYAxisGrid() {
+	      return d3.svg.axis().scale(this.yScale).orient("left").ticks(10);
 	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement('div', { className: 'five-day-forecast' });
+	      return _react2.default.createElement('div', { id: 'five-day-forecast', className: 'row' });
 	    }
 	  }]);
 	
