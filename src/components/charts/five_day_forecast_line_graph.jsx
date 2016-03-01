@@ -178,7 +178,8 @@ class FiveDayForecast extends React.Component {
 
     // create labels for each line
     this.svg.append("text")
-    	.attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")")
+    	.attr("transform", "translate(" + (this.width + 3) + "," +
+        this.yScale(consolidatedDailyForecasts.slice(-1)[0].high) + ")")
       .attr("class", "line-label")
     	.attr("dy", ".35em")
       .attr("dx", "-10em")
@@ -187,7 +188,8 @@ class FiveDayForecast extends React.Component {
     	.text("High");
 
     this.svg.append("text")
-  		.attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")")
+  		.attr("transform", "translate(" + (this.width + 3) + "," +
+        this.yScale(consolidatedDailyForecasts.slice(-1)[0].ave) + ")")
       .attr("class", "line-label")
   		.attr("dy", ".35em")
       .attr("dx", "-10em")
@@ -196,7 +198,8 @@ class FiveDayForecast extends React.Component {
   		.text("Ave");
 
   	this.svg.append("text")
-  		.attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")")
+  		.attr("transform", "translate(" + (this.width + 3) + "," +
+        this.yScale(consolidatedDailyForecasts.slice(-1)[0].low) + ")")
       .attr("class", "line-label")
   		.attr("dy", ".35em")
       .attr("dx", "-10em")

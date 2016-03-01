@@ -21074,9 +21074,9 @@
 	    prevForecastElDate = date;
 	  }
 	
-	  // check if last element of separatedForecast has data elements.  If no, remove it.
+	  // check if last element of separatedForecast has forecast data elements.  If no, remove it.
 	  // this is likely caused by OpenWeatherMap's API not providing enough data for a 5 day forecast.
-	  if (separatedForecast.slice(-1).length === 0) {
+	  if (separatedForecast.slice(-1)[0].forecast.length === 0) {
 	    separatedForecast.splice(-1);
 	  }
 	
@@ -21249,11 +21249,11 @@
 	  _createClass(ForecastIndex, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log(this.props.forecast);
+	      // console.log(this.props.forecast);
 	
 	      var forecastSplitByDay = (0, _forecast.separateForecastByDay)(this.props.forecast);
 	
-	      console.log(forecastSplitByDay);
+	      // console.log(forecastSplitByDay);
 	
 	      var length = forecastSplitByDay.length;
 	
@@ -22371,11 +22371,11 @@
 	      this.svg.append('svg:path').attr('d', this.drawAveTempLine(consolidatedDailyForecasts)).attr('class', 'line').attr('stroke', 'green').attr('stroke-width', 2).attr('fill', 'none');
 	
 	      // create labels for each line
-	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].high) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "red").text("High");
+	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts.slice(-1)[0].high) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "red").text("High");
 	
-	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].ave) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "green").text("Ave");
+	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts.slice(-1)[0].ave) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "green").text("Ave");
 	
-	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts[4].low) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
+	      this.svg.append("text").attr("transform", "translate(" + (this.width + 3) + "," + this.yScale(consolidatedDailyForecasts.slice(-1)[0].low) + ")").attr("class", "line-label").attr("dy", ".35em").attr("dx", "-10em").attr("text-anchor", "start").style("fill", "steelblue").text("Low");
 	    }
 	  }, {
 	    key: 'makeXAxisGrid',

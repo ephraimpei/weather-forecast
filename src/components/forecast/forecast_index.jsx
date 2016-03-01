@@ -9,11 +9,11 @@ class ForecastIndex extends React.Component {
   }
 
   render () {
-    console.log(this.props.forecast);
+    // console.log(this.props.forecast);
 
     const forecastSplitByDay = separateForecastByDay(this.props.forecast);
 
-    console.log(forecastSplitByDay);
+    // console.log(forecastSplitByDay);
 
     const length = forecastSplitByDay.length;
 

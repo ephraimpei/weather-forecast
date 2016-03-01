@@ -35,10 +35,10 @@ const separateForecastByDay = (forecast) => {
     prevForecastElDate = date;
   }
 
-  // check if last element of separatedForecast has data elements.  If no, remove it.
+  // check if last element of separatedForecast has forecast data elements.  If no, remove it.
   // this is likely caused by OpenWeatherMap's API not providing enough data for a 5 day forecast.
-  if (separatedForecast.slice(-1).length === 0) { separatedForecast.splice(-1); }
-  
+  if (separatedForecast.slice(-1)[0].forecast.length === 0) { separatedForecast.splice(-1); }
+
   // can index separatedForecast to get the 3-hourly forecast for that day
   // ie: separatedForecast[0].forecast gives 3-hourly forecast for day 1
   // ie: separatedForecast[1].forecast gives 3-hourly forecast for day 2
