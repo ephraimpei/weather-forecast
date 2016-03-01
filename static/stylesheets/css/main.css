@@ -165,11 +165,13 @@ html, body {
 
   .index-item-grid-wrapper.col-xs-12 {
     width: 100% !important; } }
-#five-day-forecast svg {
-  width: 100%;
-  height: 100%; }
-#five-day-forecast svg:not(:root) {
-  overflow: visible; }
+#five-day-forecast-container {
+  margin-bottom: 20px; }
+  #five-day-forecast-container #five-day-forecast svg {
+    width: 100%;
+    height: 100%; }
+  #five-day-forecast-container #five-day-forecast svg:not(:root) {
+    overflow: visible; }
 
 .grid .tick {
   stroke: lightgrey;

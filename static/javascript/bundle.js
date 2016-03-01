@@ -22390,7 +22390,11 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement('div', { id: 'five-day-forecast', className: 'row' });
+	      return _react2.default.createElement(
+	        'div',
+	        { id: 'five-day-forecast-container', className: 'container' },
+	        _react2.default.createElement('div', { id: 'five-day-forecast', className: 'row' })
+	      );
 	    }
 	  }]);
 	

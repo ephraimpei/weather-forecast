@@ -1,14 +1,19 @@
-#five-day-forecast
+#five-day-forecast-container
 {
-
-  svg {
-    width: 100%;
-    height: 100%;
-  }
-
-  svg:not(:root)
+  margin-bottom: 20px;
+  
+  #five-day-forecast
   {
-    overflow: visible;
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    svg:not(:root)
+    {
+      overflow: visible;
+    }
   }
 }
 
