@@ -12,10 +12,23 @@ class NavBar extends React.Component {
     const btnGridSizes = "col-md-2 col-sm-2 col-xs-4";
     const searchBarGridSizes = "col-md-4 col-sm-5 col-xs-12";
 
-    const locBlurbClass = classNames("curr-loc-blurb", "navbar-text", "pull-left",
-      blurbGridSizes);
+    // Navigator geolocate only works over HTTPS in Chrome v50+
+    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 
-    const btnClass = classNames("my-loc-btn", "btn", "btn-default", btnGridSizes);
+    const locBlurbClass = classNames(
+      "curr-loc-blurb",
+      "navbar-text",
+      "pull-left",
+      blurbGridSizes
+    );
+
+    const btnClass = classNames(
+      "my-loc-btn",
+      "btn",
+      "btn-default",
+      { "hide": isChrome ? true : false },
+      btnGridSizes
+    );
 
     return (
       <div className="navbar navbar-inverse navbar-static-top">

@@ -95,6 +95,8 @@ html, body {
 .my-loc-btn {
   margin-top: 8px;
   margin-bottom: 8px; }
+  .my-loc-btn.hide {
+    display: none; }
 
 @media only screen and (max-width: 768px) {
   .my-loc-btn {
