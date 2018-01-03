@@ -21,7 +21,7 @@ class Footer extends React.Component {
 
           <ul className={ iconListClass }>
 
-            <li><a href="http://www.ephraimpei.com">
+            <li><a href="https://www.ephraimpei.com">
               <img className="social-media-icon img-circle" src="/images/icons/ephraim.png"/>
             </a></li>
 
